@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    android:clickable="true">
+    <group
+        android:checkableBehavior="single"
+        android:id="@+id/group1"
+        >
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home_"
+            android:title="@string/home" />
+
+        <item
+            android:id="@+id/nav_account"
+            android:icon="@drawable/ic_baseline_person_24"
+            android:title="@string/account" />
+        <item
+            android:id="@+id/nav_complainStatus"
+            android:icon="@drawable/ic_baseline_schedule_24"
+            android:title="Complain Status" />
+
+    </group>
+<group
+    android:checkableBehavior="single"
+    android:id="@+id/group2">
+        <item
+            android:id="@+id/nav_logout"
+            android:title="@string/logout"
+            android:icon="@drawable/logout"/>
+        <item
+            android:id="@+id/nav_shareApp"
+            android:title="Share App"
+            android:icon="@drawable/ic_baseline_share_24"/>
+
+    </group>
+</menu>

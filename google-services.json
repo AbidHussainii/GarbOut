@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "641264388685",
+    "firebase_url": "https://garbout-d971f.firebaseio.com",
+    "project_id": "garbout-d971f",
+    "storage_bucket": "garbout-d971f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:641264388685:android:3c452eaa5bb24ac61aaa04",
+        "android_client_info": {
+          "package_name": "com.example.garbout"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "641264388685-rhsou2056haeh2kbqg9f5bb9cqggdoo9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCP1yhWdks4mEKuz5QikeqKfdsZh2a9MwU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "641264388685-rhsou2056haeh2kbqg9f5bb9cqggdoo9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

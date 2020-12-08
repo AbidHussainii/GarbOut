@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#ffffff"
+    android:orientation="vertical"
+    tools:context=".UserPanal.UserProfile">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/headLayout"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/background_gradient">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="14dp"
+                android:text="My Profile"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/mapBackArrow"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_alignParentStart="true"
+                android:layout_margin="12dp"
+                android:background="@drawable/ic_arrow_back"
+                android:contentDescription="@string/todo"
+                android:onClick="backArrow" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_gradient"
+            android:padding="30dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_pic"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerInParent="true"
+                android:padding="3dp"
+                android:src="@drawable/ic_baseline_person_pin_24" />
+
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/choosePicture"
+                android:layout_width="wrap_content"
+                android:layout_height="24dp"
+                android:layout_below="@+id/profile_pic"
+                android:layout_alignEnd="@+id/profile_pic"
+                android:layout_marginTop="-10dp"
+                android:layout_marginEnd="-1dp"
+
+                android:onClick="selectProfile"
+                android:src="@drawable/camera" />
+
+            <TextView
+                android:id="@+id/usernameP"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/profile_pic"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:text="Abid Hussain"
+                android:textSize="25sp"
+                android:textStyle="bold">
+
+            </TextView>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Name"
+                android:textStyle="bold">
+
+            </TextView>
+
+
+            <EditText
+                android:id="@+id/f_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:drawableRight="@drawable/ic_baseline_person_24"
+                android:drawablePadding="10dp"
+                android:text="Hello"
+                android:textSize="20sp">
+
+            </EditText>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Email"
+                android:textStyle="bold">
+
+            </TextView>
+
+            <EditText
+                android:id="@+id/f_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:drawableRight="@drawable/ic_outline_email_24"
+                android:drawablePadding="10dp"
+                android:text="Hello"
+                android:textSize="20sp">
+
+            </EditText>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Phone"
+                android:textStyle="bold">
+
+            </TextView>
+
+            <EditText
+                android:id="@+id/f_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:drawableRight="@drawable/ic_outline_phone"
+                android:drawablePadding="10dp"
+                android:text="Hello"
+                android:textSize="20sp">
+
+            </EditText>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="password"
+                android:textStyle="bold">
+
+            </TextView>
+
+            <EditText
+                android:id="@+id/f_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:drawableRight="@drawable/ic_security"
+                android:drawablePadding="10dp"
+                android:text="Hello"
+                android:textSize="20sp">
+
+            </EditText>
+
+
+            <Button
+                android:id="@+id/update"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/btn_bg"
+                android:onClick="updateProfile"
+                android:text="update profile" />
+            <Button
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:text="Delete user"
+                android:textSize="18sp"
+                android:layout_margin="20dp"
+                android:background="@drawable/btn_bg"
+                android:textColor="@android:color/black"
+                android:id="@+id/deleteUser"
+                android:layout_gravity="center"
+
+
+                />
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:mapbox="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DriverPanal.mapBox">
+    <RelativeLayout
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="My Route "
+            android:layout_centerInParent="true"
+            android:layout_marginTop="17dp"
+            android:textSize="15sp"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"/>
+
+        <ImageView
+            android:id="@+id/mapBackArrow"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentStart="true"
+            android:layout_margin="15dp"
+            android:background="@drawable/ic_arrow_back"
+            android:onClick="back"
+            android:contentDescription="@string/todo"
+          />
+
+    </RelativeLayout>
+
+    <com.mapbox.mapboxsdk.maps.MapView
+        android:id="@+id/mapView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        mapbox:mapbox_cameraTargetLat="40.741895"
+        mapbox:mapbox_cameraTargetLng="-73.174881"
+        mapbox:mapbox_cameraZoom="11"
+        android:layout_below="@id/view"/>
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@android:color/black"
+        android:layout_below="@id/layout"/>
+
+<Button
+    android:layout_width="250dp"
+    android:layout_height="wrap_content"
+   android:text="Start Navigating"
+    android:id="@+id/startNav"
+    android:layout_alignParentBottom="true"
+    android:layout_centerInParent="true"
+    android:background="@drawable/btn_bg"
+    android:layout_marginBottom="30dp"
+    />
+</RelativeLayout>
