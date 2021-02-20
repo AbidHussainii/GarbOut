@@ -198,13 +198,13 @@ public class DriverMap extends FragmentActivity implements OnMapReadyCallback {
         startActivity(intent);
     }
 
-    public void onBackPressed() {
-        Intent intent = new Intent(this, DriverDashboard.class);
-        startActivity(intent);
-        finish();
-
-
-    }
+//    public void onBackPressed() {
+//        Intent intent = new Intent(this, DriverDashboard.class);
+//        startActivity(intent);
+//        finish();
+//
+//
+//    }
     public  void gettingCordinate(){
         final FirebaseFirestore db = FirebaseFirestore.getInstance();
         final CollectionReference stores = db.collection("stores");

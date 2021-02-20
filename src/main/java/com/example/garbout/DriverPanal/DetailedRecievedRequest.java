@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.garbout.R;
+import com.example.garbout.UserPanal.UserMap;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -131,10 +132,10 @@ public class DetailedRecievedRequest extends AppCompatActivity {
         });
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
+//    @Override
+//    public void onBackPressed() {
+//        super.onBackPressed();
+//    }
 
     //
     private void checkUser() {
@@ -159,7 +160,8 @@ public class DetailedRecievedRequest extends AppCompatActivity {
 
 
     public void bacckArrow(View view) {
-       onBackPressed();
+        Intent intent = new Intent(this, UserReceivedRequest.class);
+        startActivity(intent);
     }
 
 }

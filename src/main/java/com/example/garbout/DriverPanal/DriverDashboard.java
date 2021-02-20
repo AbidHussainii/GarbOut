@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.garbout.R;
 import com.example.garbout.UserPanal.LoginActivity;
-import com.example.garbout.UserPanal.SignUpActivity;
+import com.example.garbout.UserPanal.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,59 +35,58 @@ import java.util.Collections;
 public class DriverDashboard extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     FirebaseFirestore fStore;
-    String userID;
-    TextView dName,dPhone,dRoute;
+    String userID, docId;
+    TextView dName, dPhone, dRoute, dCNIC;
 
-    LatLng ali = new LatLng(30.2072136,71.3928869);
+    LatLng ali = new LatLng(30.2072136, 71.3928869);
 
     ArrayList<LatLng> latLonList = new ArrayList<LatLng>();
     ArrayList<String> lonList = new ArrayList<String>();
     ArrayList<String> latList = new ArrayList<String>();
-     Button button;
+    Button button;
 
-     String id , lat , lon;
+    String id, lat, lon;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver_dashboard);
 
         fStore = FirebaseFirestore.getInstance();
-        firebaseAuth=FirebaseAuth.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
         userID = firebaseAuth.getCurrentUser().getUid();
 
-        dName=findViewById(R.id.dName);
-        dPhone=findViewById(R.id.dPhone);
-        dRoute=findViewById(R.id.dRoute);
+        dName = findViewById(R.id.dName);
+        dPhone = findViewById(R.id.dPhone);
+        dRoute = findViewById(R.id.dRoute);
+        dCNIC = findViewById(R.id.dCNIC);
         driverData();
-
-
-
 
 
     }
 
     public void user_requests(View view) {
-        Intent intent=new Intent(this, UserReceivedRequest.class);
+        Intent intent = new Intent(this, UserReceivedRequest.class);
         startActivity(intent);
     }
 
     public void myTask(View view) {
-        Intent intent=new Intent(this, DriverTask.class).putExtra("status", "accept");
+        Intent intent = new Intent(this, DriverTask.class).putExtra("status", "accept");
         startActivity(intent);
     }
 
     public void myRoute(View view) {
 
-        Query query=fStore.collection("Complains").whereIn("status", Collections.singletonList("accept"));
+        Query query = fStore.collection("Complains").whereIn("status", Collections.singletonList("accept"));
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()){
+                if (task.isSuccessful()) {
                     int i = 0;
 
 
-                    for(QueryDocumentSnapshot documentSnapshot : task.getResult()){
-                        id=documentSnapshot.getId();
+                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                        id = documentSnapshot.getId();
                         DocumentReference documentReference = fStore.collection("Complains").document(id);
                         documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
                             @Override
@@ -96,8 +94,9 @@ public class DriverDashboard extends AppCompatActivity {
                                 //Toast.makeText(mapBox.this, ""+id, Toast.LENGTH_SHORT).show();
 //                lat="30.2072136";
 //                lan="71.3928869";
-                                lat =value.getString("userLat");
-                              lon =value.getString("userLan");
+                                lat = value.getString("userLat");
+                                lon = value.getString("userLan");
+                                docId = id;
 
 
 //                                Toast.makeText(DriverDashboard.this, ""+lat + lon, Toast.LENGTH_SHORT).show();
@@ -118,15 +117,17 @@ public class DriverDashboard extends AppCompatActivity {
             }
         });
 
-        Intent intent=new Intent(this, mapBox.class)
+        Intent intent = new Intent(this, mapBox.class)
 //                .putExtra("list",latLonList);
-                .putStringArrayListExtra("latList",latList).putStringArrayListExtra("lonList",lonList);
+                .putStringArrayListExtra("latList", latList).putStringArrayListExtra("lonList", lonList);
+                intent.putExtra("docId", docId);
+
         startActivity(intent);
 
     }
+
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         new AlertDialog.Builder(this)
                 .setTitle("Really Exit?")
                 .setMessage("Are you sure you want to exit?")
@@ -142,21 +143,62 @@ public class DriverDashboard extends AppCompatActivity {
     }
 
     public void logout(View view) {
-        firebaseAuth.signOut();
-        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+        AlertDialog.Builder builder = new AlertDialog.Builder(DriverDashboard.this);
+        builder.setTitle("Are you sure want to Logout?");
+        //builder.setMessage("Deleting this account will result in completely removing your account?");
+
+        builder.setPositiveButton("LogOut", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int which) {
+                // Do nothing but close the dialog
+//                        fStore.collection("users").document(key).delete()
+//                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                    @Override
+//                                    public void onSuccess(Void aVoid) {
+//                                        Toast.makeText(UserProfile.this, "User successfully deleted!", Toast.LENGTH_SHORT).show();
+//                                        startActivity(new Intent(getApplicationContext(), allUsers.class));
+//                                    }
+//                                });
+                firebaseAuth.signOut();
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+
+                dialog.dismiss();
+
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                // Do nothing
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog alert = builder.create();
+        alert.show();
+//                fAuth.signOut();
+//                intent = new Intent(this, LoginActivity.class);
+//                startActivity(intent);
+//                finish();
+
+
     }
 
-    public  void driverData(){
+    public void driverData() {
         final DocumentReference documentReference = fStore.collection("users").document(userID);
         documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 dName.setText(value.getString("name"));
-                dPhone.setText(value.getString("driverRoute"));
-                dRoute.setText(value.getString("phoneNumber"));
+                dPhone.setText(value.getString("phoneNumber"));
+                dRoute.setText(value.getString("driverRoute"));
+                dCNIC.setText(value.getString("CNIC"));
 
             }
         });
     }
+
 }
 

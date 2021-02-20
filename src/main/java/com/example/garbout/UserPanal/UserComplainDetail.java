@@ -59,12 +59,10 @@ public class UserComplainDetail extends AppCompatActivity {
         Intent intent = new Intent(this, UserComplains.class);
         startActivity(intent);
     }
-    @Override
-    public void onBackPressed() {
-        Intent intent=new Intent(UserComplainDetail.this, MainActivity.class);
-        startActivity(intent);
-        finish();
-
-
-    }
+//    @Override
+//    public void onBackPressed() {
+//        Intent intent=new Intent(UserComplainDetail.this, MainActivity.class);
+//        startActivity(intent);
+//        finish();
+//    }
 }

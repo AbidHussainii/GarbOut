@@ -105,6 +105,9 @@ public class UserMap extends FragmentActivity implements OnMapReadyCallback,
             startLocationButtonClick();
             pro_bar.setVisibility(View.VISIBLE);
             configureCameraIdle();
+
+
+
 //            ic_save_proceed.setOnClickListener(new View.OnClickListener() {
 //                @Override
 //                public void onClick(View view) {
@@ -356,7 +359,8 @@ public class UserMap extends FragmentActivity implements OnMapReadyCallback,
     }
 
     public void backArrowMapActivity(View view) {
-       startActivity(new Intent(getApplicationContext(),MainActivity.class));
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
     public void mapActivityNextBtn(View view) {
@@ -385,9 +389,5 @@ public class UserMap extends FragmentActivity implements OnMapReadyCallback,
 //    }
     }
 
-    @Override
-    public void onBackPressed() {
-        Intent intent=new Intent(getApplicationContext(),MainActivity.class);
-        startActivity(intent);
-    }
+
 }

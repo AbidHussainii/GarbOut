@@ -34,8 +34,6 @@ public class SplashActivity extends AppCompatActivity {
         ProgressBar progressBar = findViewById(R.id.progressBar);
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
-
-
         Sprite doubleBounce = new ThreeBounce();
         progressBar.setIndeterminateDrawable(doubleBounce);
         checkUser();
@@ -63,20 +61,24 @@ public class SplashActivity extends AppCompatActivity {
                     if (documentSnapshot.getString("isAdmin") != null) {
 
                         startActivity(new Intent(getApplicationContext(), Admin.class));
+                        SplashActivity.this.finish();
 
                     } else if (documentSnapshot.getString("isDriver") != null) {
 
                         startActivity(new Intent(getApplicationContext(), DriverDashboard.class));
+                        SplashActivity.this.finish();
 
                     } else if (documentSnapshot.getString("isUser") != null) {
 
                         startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        SplashActivity.this.finish();
                     }
                 }
             });
         }
         else {
             startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+            SplashActivity.this.finish();
         }
     }
 }

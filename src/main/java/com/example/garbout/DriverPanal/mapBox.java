@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Intent;
 import android.content.IntentSender;
 import android.location.Location;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.garbout.R;
+import com.example.garbout.UserPanal.UserMap;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.LocationRequest;
@@ -92,13 +94,13 @@ public class mapBox extends AppCompatActivity implements OnMapReadyCallback, Loc
     ArrayList<String> lonList = new ArrayList<>();
     ArrayList mapList = new ArrayList<LatLng>();
 
-    int i=0;
+    int i = 0;
 
     FirebaseFirestore fStore;
     FirebaseAuth firebaseAuth;
     CollectionReference collectionReference;
     DocumentReference documentReference;
-    String userID, id, lat, lan;
+    String userID, id, lat, lan, popName;
     double dlat, dlan;
 //    Double lat,lan;
 
@@ -107,9 +109,6 @@ public class mapBox extends AppCompatActivity implements OnMapReadyCallback, Loc
     private LocationSettingsRequest.Builder builder;
     private static final int CHECK_REQUEST_CODE = 109;
     //...........reverse geocoding
-
-
-
 
 
     @Override
@@ -131,6 +130,8 @@ public class mapBox extends AppCompatActivity implements OnMapReadyCallback, Loc
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
         myDialog = new Dialog(this);
+
+        id = getIntent().getStringExtra("docId");
         //gettingCordinate();
 
 
@@ -169,7 +170,7 @@ public class mapBox extends AppCompatActivity implements OnMapReadyCallback, Loc
         retrieveCordinateFromFirebase();
 
         latList = getIntent().getStringArrayListExtra("latList");
-        
+
         lonList = getIntent().getStringArrayListExtra("lonList");
 
 
@@ -195,7 +196,6 @@ public class mapBox extends AppCompatActivity implements OnMapReadyCallback, Loc
 //        Toast.makeText(this, "Hey 0"+ latList.get(0), Toast.LENGTH_SHORT).show();
 //        Toast.makeText(this, "Hey 1"+ latList.get(1), Toast.LENGTH_SHORT).show();
 //        Toast.makeText(this, "Hey 2"+ latList.get(2), Toast.LENGTH_SHORT).show();
-
 
 
         //Toast.makeText(this, "hello"+lat+lan, Toast.LENGTH_SHORT).show();
@@ -412,28 +412,27 @@ public class mapBox extends AppCompatActivity implements OnMapReadyCallback, Loc
     }
 
     private void retrieveCordinateFromFirebase() {
-       Query query=fStore.collection("Complains").whereIn("status", Collections.singletonList("accept"));
+        Query query = fStore.collection("Complains").whereIn("status", Collections.singletonList("accept"));
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()){
-                    for(QueryDocumentSnapshot documentSnapshot : task.getResult()){
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
 
 
-                        id=documentSnapshot.getId();
+                        id = documentSnapshot.getId();
                         DocumentReference documentReference = fStore.collection("Complains").document(id);
                         documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
                             @Override
                             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
 
-                                lat = value.getString("userLat");
+                                        lat = value.getString("userLat");
                                 lan = value.getString("userLan");
                                 dlat = Double.parseDouble(lat);
                                 dlan = Double.parseDouble(lan);
-                                    map.addMarker(new MarkerOptions()
-                                            .position(new LatLng(dlat, dlan))
-                                            .title("marker : " + 1));
-
+                                map.addMarker(new MarkerOptions()
+                                        .position(new LatLng(dlat, dlan))
+                                        .title("marker : " + 1));
 
 
 //                                 Toast.makeText(mapBox.this, "Abid   1" + lan+lat, Toast.LENGTH_SHORT).show();
@@ -541,15 +540,17 @@ public class mapBox extends AppCompatActivity implements OnMapReadyCallback, Loc
             }
         });
     }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
+//
+//    @Override
+//    public void onBackPressed() {
+//        super.onBackPressed();
+//    }
 
     public void back(View view) {
-        onBackPressed();
+        Intent intent = new Intent(this, DriverDashboard.class);
+        startActivity(intent);
     }
+
     @SuppressLint("MissingPermission")
     @Override
     protected void onStart() {

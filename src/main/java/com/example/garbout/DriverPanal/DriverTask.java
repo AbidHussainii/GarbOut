@@ -17,6 +17,7 @@ import com.example.garbout.Admin.Admin;
 import com.example.garbout.R;
 import com.example.garbout.UserPanal.MainActivity;
 import com.example.garbout.UserPanal.UserComplainDetail;
+import com.example.garbout.UserPanal.UserMap;
 import com.example.garbout.UserPanal.upload;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -134,13 +135,14 @@ public class DriverTask extends AppCompatActivity {
         adapter.stopListening();
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
+//    @Override
+//    public void onBackPressed() {
+//        super.onBackPressed();
+//    }
 
     public void arrowBack(View view) {
-       onBackPressed();
+        Intent intent = new Intent(this, DriverDashboard.class);
+        startActivity(intent);
     }
 
     private void checkUser() {

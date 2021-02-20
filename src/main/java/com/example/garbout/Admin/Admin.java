@@ -1,7 +1,6 @@
 package com.example.garbout.Admin;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -10,23 +9,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
-import com.example.garbout.DriverPanal.DriverDashboard;
 import com.example.garbout.DriverPanal.DriverTask;
 import com.example.garbout.DriverPanal.UserReceivedRequest;
 import com.example.garbout.R;
 import com.example.garbout.UserPanal.LoginActivity;
-import com.example.garbout.UserPanal.MainActivity;
 import com.example.garbout.UserPanal.SignUpActivity;
-import com.example.garbout.UserPanal.UserComplains;
 import com.example.garbout.UserPanal.allUsers;
-import com.example.garbout.UserPanal.upload;
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class Admin extends AppCompatActivity {

@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -21,7 +20,6 @@ import android.widget.Toast;
 
 import com.example.garbout.Admin.Admin;
 import com.example.garbout.DriverPanal.DriverDashboard;
-import com.example.garbout.DriverPanal.UserReceivedRequest;
 import com.example.garbout.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -32,7 +30,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -67,11 +64,11 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-              /*
+
                 if (!validateEmail() | !validatePassword()) {
                     return;
 
-                }*/
+                }
                 //  progressBar.setVisibility(View.VISIBLE);
 //                final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
 //                progressDialog.setTitle("please Wait...");
@@ -117,7 +114,9 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "Driver", Toast.LENGTH_SHORT).show();
                 } else if (documentSnapshot.getString("isUser") != null) {
                     Toast.makeText(LoginActivity.this, "User", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                    Intent intent=new Intent(LoginActivity.this,MainActivity.class);
+                    startActivity(intent);
+                    //startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 }
             }
 
@@ -193,5 +192,37 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+    private Boolean validateEmail() {
+        String val = userMail.getEditText().getText().toString();
+        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+.+[a-z]+";
+        if (val.isEmpty()) {
+            userMail.setError("Field cannot be empty");
+            return false;
+        } else if (!val.matches(emailPattern)) {
+            userMail.setError("Invalid email address");
+            return false;
+        } else {
+            userMail.setError(null);
+            userMail.setErrorEnabled(false);
+            return true;
+        }
+    }
+    private Boolean validatePassword() {
+        String val = userPassword.getEditText().getText().toString();
+        if (val.isEmpty()) {
+            userPassword.setError("Field cannot be empty");
+            return false;
+        }
+        else {
+            userPassword.setError(null);
+            userPassword.setErrorEnabled(false);
+            return true;
+        }
+    }
+//    @Override
+//    public void onBackPressed() {
+//        super.onBackPressed();
+//        finish();
+//    }
 }
 

@@ -31,7 +31,7 @@ public class pop_up extends Activity {
     FirebaseAuth fAuth;
     FirebaseFirestore firestore;
     DocumentReference documentReference;
-    String userID;
+    String userID,id;
     ImageView profile;
 
     @Override
@@ -50,11 +50,12 @@ public class pop_up extends Activity {
         firestore = FirebaseFirestore.getInstance();
         userID = fAuth.getCurrentUser().getUid();
 
+
 //-------------------------------Getting_values_from_Firebase--------------------------------------------------------------------------------------------
 
 
 
-       documentReference = firestore.collection("users").document(userID);
+       documentReference = firestore.collection("Complains").document(id);
         documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {

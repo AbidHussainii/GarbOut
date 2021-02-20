@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.example.garbout.Admin.Admin;
 import com.example.garbout.R;
 import com.example.garbout.UserPanal.MainActivity;
+import com.example.garbout.UserPanal.UserMap;
 import com.example.garbout.UserPanal.upload;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -131,11 +132,11 @@ public class UserReceivedRequest extends AppCompatActivity {
         adapter.stopListening();
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-
-    }
+//    @Override
+//    public void onBackPressed() {
+//        super.onBackPressed();
+//
+//    }
     private void checkUser(){
         final DocumentReference documentReference = firebaseFirestore.collection("users").document(uid);
         documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -154,9 +155,14 @@ public class UserReceivedRequest extends AppCompatActivity {
 
         });
     }
+
     public void backArrow(View view) {
-        onBackPressed();
+       onBackPressed();
     }
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }

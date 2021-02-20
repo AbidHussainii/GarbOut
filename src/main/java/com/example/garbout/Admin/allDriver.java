@@ -17,9 +17,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.garbout.R;
-import com.example.garbout.UserPanal.SignUpActivity;
+import com.example.garbout.UserPanal.UserMap;
 import com.example.garbout.UserPanal.UserProfile;
-import com.example.garbout.UserPanal.allUsers;
 import com.example.garbout.UserPanal.upload;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -27,8 +26,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.StorageReference;
-import com.google.type.LatLng;
-import com.squareup.picasso.Picasso;
 
 public class allDriver extends AppCompatActivity {
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
@@ -152,11 +149,12 @@ public class allDriver extends AppCompatActivity {
     }
 
     public void complainBackArrow(View view) {
-        onBackPressed();
+        Intent intent = new Intent(this, Admin.class);
+        startActivity(intent);
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
+//    @Override
+//    public void onBackPressed() {
+//        super.onBackPressed();
+//    }
 }

@@ -42,6 +42,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".UserPanal.contactUs"></activity>
         <activity android:name=".Admin.allDriver" />
         <activity android:name=".UserPanal.allUsers" />
         <activity android:name=".Admin.Admin" />

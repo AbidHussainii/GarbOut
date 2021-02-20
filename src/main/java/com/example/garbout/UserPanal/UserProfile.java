@@ -11,11 +11,14 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,19 +49,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class UserProfile extends AppCompatActivity {
-    EditText username, usermail, usernumber, userpassword;
+    EditText username, usermail, usernumber, userpassword, user_CNIC;
     Button updateProfile, deleteUser;
     ImageView profileImage, selectPic;
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
     String userID, key, role;
-    TextView userProfileName;
+    TextView userProfileName, editProfile;
     String userProfile;
     // private Uri imageUri;
     StorageReference storageReference;
     ProgressBar progressBar;
     DocumentReference documentReference;
-
+    boolean isImageFitToScreen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,11 +70,12 @@ public class UserProfile extends AppCompatActivity {
         username = findViewById(R.id.f_name);
         usermail = findViewById(R.id.f_email);
         usernumber = findViewById(R.id.f_phone);
-        userpassword = findViewById(R.id.f_password);
-        userProfileName = findViewById(R.id.usernameP);
+//        userpassword = findViewById(R.id.f_password);
+        userProfileName = findViewById(R.id.userProfileName);
         profileImage = findViewById(R.id.profile_pic);
         updateProfile = findViewById(R.id.update);
-        selectPic = findViewById(R.id.choosePicture);
+        editProfile = findViewById(R.id.editProfile);
+//        selectPic = findViewById(R.id.choosePicture);
         deleteUser = findViewById(R.id.deleteUser);
         // ProgressBar progressBar = (ProgressBar) findViewById(R.id.progress);
         key = getIntent().getStringExtra("key");
@@ -81,72 +85,83 @@ public class UserProfile extends AppCompatActivity {
         fStore = FirebaseFirestore.getInstance();
         userID = fAuth.getCurrentUser().getUid();
         storageReference = FirebaseStorage.getInstance().getReference();
-
         //retrieveImageFromFirebase();
         if (role.equals("admin")) {
             retreiveData(key);
             updateProfile.setVisibility(View.GONE);
-            selectPic.setVisibility(View.GONE);
+           // selectPic.setVisibility(View.INVISIBLE);
             deleteUser.setVisibility(View.VISIBLE);
+            updateProfile.setVisibility(View.GONE);
+
 
         }
 
 
         if (role.equals("user")) {
             retreiveData(userID);
-            updateProfile.setVisibility(View.VISIBLE);
+            updateProfile.setVisibility(View.GONE);
             deleteUser.setVisibility(View.GONE);
 //            updateProfile.setVisibility(View.VISIBLE);
-//            updateProfile.setVisibility(View.GONE);
+            //updateProfile.setVisibility(View.GONE);
         }
 
         //-----------delete user.........//
         deleteUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-DeleteUser();
+                DeleteUser();
 
             }
         });
 
 
+        editProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateProfile.setVisibility(View.VISIBLE);
+
+            }
+        });
+
     }
 
-public  void  DeleteUser(){
-    AlertDialog.Builder builder = new AlertDialog.Builder(UserProfile.this);
-    builder.setTitle("Delete Account?");
-    builder.setMessage("Deleting this account will result in completely removing your account?");
 
-    builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+    public void DeleteUser() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(UserProfile.this);
+        builder.setTitle("Delete Account?");
+        builder.setMessage("Deleting this account will result in completely removing your account?");
 
-        public void onClick(DialogInterface dialog, int which) {
-            // Do nothing but close the dialog
-            fStore.collection("users").document(key).delete()
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Toast.makeText(UserProfile.this, "User successfully deleted!", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getApplicationContext(), allUsers.class));
-                        }
-                    });
-            dialog.dismiss();
-        }
-    });
+        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
 
-    builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // Do nothing but close the dialog
+                fStore.collection("users").document(key).delete()
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Toast.makeText(UserProfile.this, "User successfully deleted!", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(getApplicationContext(), allUsers.class));
+                            }
+                        });
+                dialog.dismiss();
+            }
+        });
 
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
+        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
 
-            // Do nothing
-            dialog.dismiss();
-        }
-    });
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
 
-    AlertDialog alert = builder.create();
-    alert.show();
+                // Do nothing
+                dialog.dismiss();
+            }
+        });
 
-}
+        AlertDialog alert = builder.create();
+        alert.show();
+
+    }
+
     public void retreiveData(String role) {
         documentReference = fStore.collection("users").document(role);
         documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
@@ -155,8 +170,9 @@ public  void  DeleteUser(){
                 username.setText(value.getString("name"));
                 usermail.setText(value.getString("mail"));
                 usernumber.setText(value.getString("phoneNumber"));
-                userpassword.setText(value.getString("password"));
+//                userpassword.setText(value.getString("password"));
                 userProfileName.setText(value.getString("name"));
+//                user_CNIC.setText(value.getString("CNIC"));
                 userProfile = value.getString("Url");
                 Picasso.get().load(userProfile).into(profileImage);
 
@@ -302,6 +318,7 @@ public  void  DeleteUser(){
     public void backArrow(View view) {
         onBackPressed();
     }
+
 
 }
 

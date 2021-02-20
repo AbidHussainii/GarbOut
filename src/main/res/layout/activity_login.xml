@@ -109,6 +109,7 @@
         android:background="@drawable/btn_bg"
         android:layout_gravity="center"
         android:text="@string/login"
+        android:textColor="@android:color/white"
         android:textSize="20sp"
         />
         <LinearLayout

@@ -32,7 +32,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:fontFamily="sans-serif-black"
-            android:text="Dr. Damon Salvatore"
             android:textColor="#000000"
             android:textSize="15sp"
             android:textStyle="bold" />
@@ -70,7 +69,7 @@
                 android:layout_gravity="start"
                 android:layout_marginStart="20dp"
                 android:padding="5dp"
-                android:text="+92-311-0062142"
+
                 android:textColor="#000000" />
         </LinearLayout>
 
@@ -107,7 +106,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="0dp"
                 android:padding="5dp"
-                android:text="Gulgasht, Multan"
+
                 android:textColor="#000000" />
 
         </LinearLayout>

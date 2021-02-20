@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/circular_grey_bordersolid"
     tools:context=".DriverPanal.DetailedRecievedRequest">
 
     <RelativeLayout
@@ -30,183 +31,412 @@
             android:text="UserComplain"
             android:layout_centerInParent="true"
             android:textSize="15sp"
-            android:textStyle="bold" />
+            android:textColor="@android:color/black"
+             />
 
     </RelativeLayout>
 <ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
-        <ImageView
-            android:id="@+id/complainPic"
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:scaleType="centerCrop" />
-
-
-
-    </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-       android:layout_centerInParent="true"
-        android:text="Complain Detail"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="20sp"
-        android:textStyle="bold" />
-    </RelativeLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="10dp"
-        android:id="@+id/layour3">
-
-        <TextView
-            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="Date"
-            android:textSize="25sp" />
+            android:layout_margin="10dp"
+            app:cardCornerRadius="10dp"
+            android:id="@+id/topCard">
 
-        <TextView
-            android:id="@+id/date"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:text="date"
-            android:textSize="25sp" />
+            <ImageView
+                android:id="@+id/complainPic"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="centerCrop" />
 
-    </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="10dp">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="Time"
-            android:textSize="25sp" />
-
-        <TextView
-            android:id="@+id/time"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:text="time"
-            android:textSize="25sp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="10dp">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="Complain Address"
-            android:textSize="25sp" />
-
-        <TextView
-            android:id="@+id/userComplainAddress"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:text="complain address"
-            android:textSize="25sp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="10dp">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="Complain Detail"
-            android:textSize="25sp" />
-
-        <TextView
-            android:id="@+id/userComplainDetail"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:text="complain detail"
-            android:textSize="25sp" />
-
-    </LinearLayout>
-
+        </androidx.cardview.widget.CardView>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_below="@id/topCard"
+            android:layout_centerInParent="true"
+            android:id="@+id/middleLayout">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Complain Detail"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20sp"
+                />
+
+        </LinearLayout>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            app:cardCornerRadius="10dp"
+
+            android:id="@+id/bottomCard"
+            android:layout_below="@id/middleLayout">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="Date"
+                        android:textSize="25sp" />
+
+                    <TextView
+                        android:id="@+id/date"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:text="date"
+                        android:textSize="25sp" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="	#808080"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="Time"
+                        android:textSize="25sp" />
+
+                    <TextView
+                        android:id="@+id/time"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:text="time"
+                        android:textSize="25sp" />
+
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="	#808080"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="Complain Address"
+                        android:textSize="25sp" />
+
+                    <TextView
+                        android:id="@+id/userComplainAddress"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:text="complain address"
+                        android:textSize="25sp" />
+
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="	#808080"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="Complain Detail"
+                        android:textSize="25sp" />
+
+                    <TextView
+                        android:id="@+id/userComplainDetail"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:text="complain detail"
+                        android:textSize="25sp" />
+
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="	#808080"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"/>
+            </LinearLayout>
+
+
+        </androidx.cardview.widget.CardView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+           android:layout_centerInParent="true"
             android:layout_marginTop="10dp"
             android:id="@+id/btnLayout"
-            android:visibility="gone">
+            android:layout_below="@id/bottomCard"
+            android:visibility="gone"
+
+            >
 
             <Button
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:background="@android:color/holo_orange_light"
+                android:background="#000"
                 android:onClick="acceptRequest"
                 android:text="Accept"
-                android:textColor="@android:color/black"
+                android:textColor="@android:color/white"
                 android:textSize="20sp" />
 
             <Button
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:background="@android:color/holo_orange_light"
+                android:background="#000"
                 android:onClick="cancelRequest"
                 android:text="Cancel"
                 android:textSize="20sp"
+                android:textColor="@android:color/white"
                 android:id="@+id/cancel"/>
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-            android:id="@+id/btnDelLayout"
-            android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:id="@+id/btnDelLayout"
+                    android:layout_below="@id/btnLayout"
+                    android:layout_centerInParent="true"
+                    android:visibility="gone"
+                  >
 
 
-            <Button
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:background="@android:color/holo_orange_light"
-                android:onClick="cancelRequest"
-                android:text="Delete"
-                android:textSize="20sp"
+                    <Button
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:background="#000"
+                        android:onClick="cancelRequest"
+                        android:text="Delete"
+                        android:textColor="@android:color/white"
 
-               />
-        </LinearLayout>
+                        android:textSize="20sp"
 
-    </LinearLayout>
+                       />
+                </LinearLayout>
+
+    </RelativeLayout>
+
+
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="vertical">-->
+<!--    <RelativeLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content">-->
+
+<!--        <ImageView-->
+<!--            android:id="@+id/complainPic"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="200dp"-->
+<!--            android:scaleType="centerCrop" />-->
+
+
+
+<!--    </RelativeLayout>-->
+<!--    <RelativeLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content">-->
+<!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--       android:layout_centerInParent="true"-->
+<!--        android:text="Complain Detail"-->
+<!--        android:textColor="@color/colorPrimaryDark"-->
+<!--        android:textSize="20sp"-->
+<!--        android:textStyle="bold" />-->
+<!--    </RelativeLayout>-->
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:layout_margin="10dp"-->
+<!--        android:id="@+id/layour3">-->
+
+<!--        <TextView-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="2"-->
+<!--            android:text="Date"-->
+<!--            android:textSize="25sp" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/date"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="3"-->
+<!--            android:text="date"-->
+<!--            android:textSize="25sp" />-->
+
+<!--    </LinearLayout>-->
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:layout_margin="10dp">-->
+
+<!--        <TextView-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="2"-->
+<!--            android:text="Time"-->
+<!--            android:textSize="25sp" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/time"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="3"-->
+<!--            android:text="time"-->
+<!--            android:textSize="25sp" />-->
+
+<!--    </LinearLayout>-->
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:layout_margin="10dp">-->
+
+<!--        <TextView-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="2"-->
+<!--            android:text="Complain Address"-->
+<!--            android:textSize="25sp" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/userComplainAddress"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="3"-->
+<!--            android:text="complain address"-->
+<!--            android:textSize="25sp" />-->
+
+<!--    </LinearLayout>-->
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:layout_margin="10dp">-->
+
+<!--        <TextView-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="2"-->
+<!--            android:text="Complain Detail"-->
+<!--            android:textSize="25sp" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/userComplainDetail"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="3"-->
+<!--            android:text="complain detail"-->
+<!--            android:textSize="25sp" />-->
+
+<!--    </LinearLayout>-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:id="@+id/btnLayout"-->
+<!--            android:visibility="gone">-->
+
+<!--            <Button-->
+<!--                android:layout_width="150dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="20dp"-->
+<!--                android:background="@android:color/holo_orange_light"-->
+<!--                android:onClick="acceptRequest"-->
+<!--                android:text="Accept"-->
+<!--                android:textColor="@android:color/black"-->
+<!--                android:textSize="20sp" />-->
+
+<!--            <Button-->
+<!--                android:layout_width="150dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="20dp"-->
+<!--                android:background="@android:color/holo_orange_light"-->
+<!--                android:onClick="cancelRequest"-->
+<!--                android:text="Cancel"-->
+<!--                android:textSize="20sp"-->
+<!--                android:id="@+id/cancel"/>-->
+<!--        </LinearLayout>-->
+<!--        <LinearLayout-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:layout_marginTop="20dp"-->
+<!--            android:id="@+id/btnDelLayout"-->
+<!--            android:visibility="gone">-->
+
+
+<!--            <Button-->
+<!--                android:layout_width="150dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="20dp"-->
+<!--                android:background="@android:color/holo_orange_light"-->
+<!--                android:onClick="cancelRequest"-->
+<!--                android:text="Delete"-->
+<!--                android:textSize="20sp"-->
+
+<!--               />-->
+<!--        </LinearLayout>-->
+
+<!--    </LinearLayout>-->
 </ScrollView>
 </LinearLayout>

@@ -44,9 +44,11 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:weightSum="2"
-        android:id="@+id/btnsLayout">
+        android:id="@+id/btnsLayout"
+
+
+        >
 
         <Button
             android:layout_width="wrap_content"
@@ -54,6 +56,7 @@
             android:background="@android:color/holo_red_light"
             android:onClick="allusers"
             android:text="Users"
+            android:layout_margin="10dp"
             android:textColor="@android:color/white"
             android:layout_weight="1"/>
 
@@ -64,16 +67,22 @@
             android:text="Drivers"
             android:layout_weight="1"
             android:textColor="@android:color/white"
-            android:onClick="alldrivers"/>
+            android:onClick="alldrivers"
+            android:layout_margin="10dp"/>
 
     </LinearLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:id="@+id/container">
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:id="@+id/scrollView">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -475,7 +484,7 @@
                                 android:layout_height="70dp"
                                 android:layout_gravity="center"
                                 android:contentDescription="@string/add_complain"
-                                android:src="@drawable/checklist" />
+                                android:src="@drawable/jobs" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -569,13 +578,62 @@
                 </LinearLayout>
 
 
+
             </LinearLayout>
 
+
         </ScrollView>
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_alignParentBottom="true"-->
+<!--            android:layout_below="@id/scrollView"-->
+
+<!--            >-->
+<!--            <LinearLayout-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="vertical"-->
+<!--                >-->
+<!--                <ImageView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:src="@drawable/user"/>-->
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Users"-->
+<!--                    android:textSize="20sp"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    />-->
+
+<!--            </LinearLayout>-->
+<!--            <LinearLayout-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="vertical"-->
+
+<!--                >-->
+<!--                <ImageView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:src="@drawable/driverrs"/>-->
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Drivers"-->
+<!--                    android:textSize="20sp"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    />-->
+
+<!--            </LinearLayout>-->
+
+<!--        </LinearLayout>-->
 
 
     </RelativeLayout>
 
 
 
+</ScrollView>
 </LinearLayout>

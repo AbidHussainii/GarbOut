@@ -55,6 +55,7 @@ public class ComplainFormActivity extends AppCompatActivity {
     TextInputLayout etYourName, etPhone, etDetailReport;
 
     public int REQUEST_IMAGE_CAPTURE_CODE = 103;
+    public int permmissionCode = 22;
     private Bitmap capturedImage;
     private ProgressBar mProgressBar;
     String userId;
@@ -166,7 +167,7 @@ public class ComplainFormActivity extends AppCompatActivity {
                         imgDown = uri.toString();
                         getDownload();
                         Toast.makeText(ComplainFormActivity.this, "Url : " + uri, Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(getApplicationContext(),UserComplains.class));
+                        startActivity(new Intent(getApplicationContext(), UserComplains.class));
 
                         //Picasso.get().load(uri).into(captureImage);
                         progressDialog.dismiss();
@@ -255,6 +256,7 @@ public class ComplainFormActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<DocumentReference> task) {
                 Toast.makeText(ComplainFormActivity.this, "Done", Toast.LENGTH_SHORT).show();
+                new Intent(getApplicationContext(), UserComplains.class);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -266,26 +268,51 @@ public class ComplainFormActivity extends AppCompatActivity {
 
     }
 
-//    public void chose(View view) {
-//        Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//        startActivityForResult(openGalleryIntent, 1000);
+
+    public void accessCamera(View view) {
+        //  cameraPermissions();
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, permmissionCode);
+//            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+//                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+//                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE_CODE);
+//                }
+//            }
+
+        } else {
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE_CODE);
+            }
+        }
+    }
+
+//    public void cameraPermissions() {
+//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, REQUEST_IMAGE_CAPTURE_CODE);
+//        }
 //    }
 
 
-    public void accessCamera(View view) {
-        cameraPermissions();
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE_CODE);
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == permmissionCode) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "camera permission granted", Toast.LENGTH_LONG).show();
+                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE_CODE);
+            } else {
+                Toast.makeText(this, "camera permission denied", Toast.LENGTH_LONG).show();
+            }
         }
     }
 
-    public void cameraPermissions() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, REQUEST_IMAGE_CAPTURE_CODE);
-        }
-    }
-
+    //    public void chose(View view) {
+//        Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//        startActivityForResult(openGalleryIntent, 1000);
+//    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -295,12 +322,11 @@ public class ComplainFormActivity extends AppCompatActivity {
                 captureImage.setImageBitmap(picture);
 
                 Toast.makeText(this, "1st : " + picture, Toast.LENGTH_SHORT).show();
-
-
                 ByteArrayOutputStream bytes = new ByteArrayOutputStream();
                 picture.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
                 Uri path = Uri.parse(MediaStore.Images.Media.insertImage(getApplicationContext().getContentResolver(), picture, "Title", null));
                 imageUri = path;
+
 
 //                imageUri = getImageUri(getApplicationContext(), picture);
 //
@@ -343,13 +369,14 @@ public class ComplainFormActivity extends AppCompatActivity {
 
 
     public void backArrow(View view) {
-       onBackPressed();
+        Intent intent = new Intent(this, UserMap.class);
+        startActivity(intent);
     }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
+//    @Override
+//    public void onBackPressed() {
+//        super.onBackPressed();
+//
+//    }
 }
 
 
