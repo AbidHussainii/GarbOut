@@ -55,9 +55,9 @@ public class SignUpActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Toast.makeText(SignUpActivity.this, "Please Wait", Toast.LENGTH_SHORT).show();
 
-                if (!validateName() | !validateEmail() | !validatePhoneNo() | !validatePassword()|!validateCNIC()){
-                    return;
-                }
+//                if (!validateName() | !validateEmail() | !validatePhoneNo() | !validatePassword()|!validateCNIC()){
+//                    return;
+//                }
 
 
                 //getting values

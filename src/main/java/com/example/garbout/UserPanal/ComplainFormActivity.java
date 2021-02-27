@@ -1,6 +1,7 @@
 package com.example.garbout.UserPanal;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -34,12 +35,15 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -69,9 +73,9 @@ public class ComplainFormActivity extends AppCompatActivity {
     FirebaseFirestore firebaseFirestore;
     CollectionReference collectionReference;
     DocumentReference documentReference;
-    String userAddress;
-    Double lat;
-    Double lan;
+    String userAddress,lat,lan;
+//    Double lat;
+//    Double lan;lan
 
 
     @Override
@@ -92,8 +96,8 @@ public class ComplainFormActivity extends AppCompatActivity {
         firebaseFirestore = FirebaseFirestore.getInstance();
         collectionReference = firebaseFirestore.collection("Complains");
         userAddress = getIntent().getStringExtra("Address");
-        lat = getIntent().getDoubleExtra("lat", 0);
-        lan = getIntent().getDoubleExtra("lan", 0);
+//        lat = getIntent().getDoubleExtra("lat", 0);
+//        lan = getIntent().getDoubleExtra("lan", 0);
         //  geoPoint = new GeoPoint(lat,lan);
 
         Toast.makeText(this, "" + "" + lan, Toast.LENGTH_SHORT).show();
@@ -147,12 +151,13 @@ public class ComplainFormActivity extends AppCompatActivity {
             }
 
         });
+        retreivingProfile();
+
     }
 
 
     //upload image to firebase
     private void uploadImageToFirebase() {
-
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("please Wait...");
         progressDialog.show();
@@ -205,8 +210,6 @@ public class ComplainFormActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot documentSnapshot = task.getResult();
-
-                    userProfile = documentSnapshot.getString("imageUrl");
                     UserName = documentSnapshot.getString("name");
                     uploadComplain();
 
@@ -236,6 +239,7 @@ public class ComplainFormActivity extends AppCompatActivity {
         PhoneNo = etPhone.getEditText().getText().toString();
         Detail = etDetailReport.getEditText().getText().toString();
         String status = "Pending";
+       // upload upload=new upload(UserName,Detail,currentDate,imgDown,time,userProfile,userAddress,PhoneNo,userId,lat,lan,null,status);
 
         Map<String, Object> complain = new HashMap<>();
         complain.put("UserName", UserName);
@@ -249,9 +253,9 @@ public class ComplainFormActivity extends AppCompatActivity {
         complain.put("status", status);
         complain.put("complainAddress", userAddress);
         // complain.put("Locations",geoPoint);
-        complain.put("userLat", lat.toString());
-        complain.put("userLan", lan.toString());
-        //complain.put("userProfileUrl", userProfile);
+//        complain.put("userLat", lat.toString());
+//        complain.put("userLan", lan.toString());
+        complain.put("userProfileUrl", userProfile);
         collectionReference.add(complain).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
             @Override
             public void onComplete(@NonNull Task<DocumentReference> task) {
@@ -377,6 +381,19 @@ public class ComplainFormActivity extends AppCompatActivity {
 //        super.onBackPressed();
 //
 //    }
+public void retreivingProfile() {
+    documentReference = firebaseFirestore.collection("users").document(userId);
+    documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+        @Override
+        public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+
+            userProfile = value.getString("Url");
+            Toast.makeText(ComplainFormActivity.this, ""+userProfile, Toast.LENGTH_SHORT).show();
+
+        }
+    });
+
+}
 }
 
 

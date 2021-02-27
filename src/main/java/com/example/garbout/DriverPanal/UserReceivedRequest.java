@@ -75,7 +75,8 @@ public class UserReceivedRequest extends AppCompatActivity {
                 holder.rName.setText(model.getUserName());
                 holder.rTime.setText(model.getTime());
                 holder.rAddress.setText(model.getComplainAddress());
-                Picasso.get().load(model.getUrl()).into(holder.rImage);
+                //Picasso.get().load(model.getUrl()).into(holder.rImage);
+                Picasso.get().load(String.valueOf(model.getUrl())).into(holder.rImage);
 
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -157,7 +158,8 @@ public class UserReceivedRequest extends AppCompatActivity {
     }
 
     public void backArrow(View view) {
-       onBackPressed();
+     onBackPressed();
+     finish();
     }
 
     @Override

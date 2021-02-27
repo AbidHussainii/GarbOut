@@ -446,7 +446,8 @@
                     android:layout_margin="12dp"
                     app:cardCornerRadius="12dp"
                     android:touchscreenBlocksFocus="true"
-                    app:cardElevation="5dp">
+                    app:cardElevation="5dp"
+                    android:onClick="completedTask">
 
                     <LinearLayout
                         android:layout_width="match_parent"

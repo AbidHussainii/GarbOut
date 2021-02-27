@@ -65,10 +65,10 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
 
 
-                if (!validateEmail() | !validatePassword()) {
-                    return;
-
-                }
+//                if (!validateEmail() | !validatePassword()) {
+//                    return;
+//
+//                }
                 //  progressBar.setVisibility(View.VISIBLE);
 //                final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
 //                progressDialog.setTitle("please Wait...");

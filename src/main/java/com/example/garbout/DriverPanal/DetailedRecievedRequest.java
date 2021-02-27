@@ -29,6 +29,7 @@ import java.util.Map;
 
 public class DetailedRecievedRequest extends AppCompatActivity {
     FirebaseFirestore firebaseFirestore;
+    FirebaseAuth firebaseAuth;
     CollectionReference collectionReference;
     String key;
     TextView date, time, complainAddress, complainDetail;
@@ -36,7 +37,7 @@ public class DetailedRecievedRequest extends AppCompatActivity {
     String status, uid;
     LinearLayout linearLayout, linearLayout1;
     Button deleteComplain;
-    FirebaseAuth firebaseAuth;
+
     String userId;
 
     @Override
@@ -52,9 +53,10 @@ public class DetailedRecievedRequest extends AppCompatActivity {
         complainPicture = findViewById(R.id.complainPic);
         firebaseFirestore = FirebaseFirestore.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
+        key = getIntent().getStringExtra("key");
+
         uid = firebaseAuth.getCurrentUser().getUid();
 
-        key = getIntent().getStringExtra("key");
 
         final DocumentReference documentReference = firebaseFirestore.collection("Complains").document(key);
         documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -67,7 +69,17 @@ public class DetailedRecievedRequest extends AppCompatActivity {
                         time.setText((String) documentSnapshot.get("time"));
                         complainDetail.setText((String) documentSnapshot.get("Detail"));
                         complainAddress.setText((String) documentSnapshot.get("complainAddress"));
+                        status= (String) documentSnapshot.get("status");
                         Picasso.get().load((String) documentSnapshot.get("Url1")).into(complainPicture);
+                        Toast.makeText(DetailedRecievedRequest.this, ""+status, Toast.LENGTH_SHORT).show();
+                        if (status.equals("accept")){
+                            linearLayout.setVisibility(View.GONE);
+                            linearLayout1.setVisibility(View.GONE);
+                        }
+                                            if (status.equals("Pending")){
+                        linearLayout.setVisibility(View.VISIBLE);
+                        linearLayout1.setVisibility(View.GONE);
+                    }
 
                         // complainAddress.setText(documentSnapshot.get(""));
                     }
@@ -75,28 +87,33 @@ public class DetailedRecievedRequest extends AppCompatActivity {
             }
         });
 
-         checkUser();
+        checkUser();
     }
 
-    public void adminCheck() {
-        final DocumentReference documentReference = firebaseFirestore.collection("users").document(uid);
-        documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if (documentSnapshot.getString("isAdmin") != null) {
-                    linearLayout1.setVisibility(View.VISIBLE);
-                    linearLayout.setVisibility(View.GONE);
-
-                }
-                if (documentSnapshot.getString("isDriver") != null) {
-
-                    linearLayout.setVisibility(View.VISIBLE);
-                    linearLayout1.setVisibility(View.GONE);
-                }
-            }
-
-        });
-    }
+//    public void adminCheck() {
+//        final DocumentReference documentReference = firebaseFirestore.collection("users").document(uid);
+//        documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+//            @Override
+//            public void onSuccess(DocumentSnapshot documentSnapshot) {
+//                if (documentSnapshot.getString("isAdmin") != null) {
+//                    linearLayout1.setVisibility(View.VISIBLE);
+//                    linearLayout.setVisibility(View.GONE);
+//
+//                }
+//                if (documentSnapshot.getString("isDriver") != null) {
+//                    if (status.equals("accept")){
+//                        linearLayout.setVisibility(View.GONE);
+//                        linearLayout1.setVisibility(View.GONE);
+//                    }
+//                    if (status.equals("Pending")){
+//                        linearLayout.setVisibility(View.VISIBLE);
+//                        linearLayout1.setVisibility(View.GONE);
+//                    }
+//                }
+//            }
+//
+//        });
+//    }
 
     public void acceptRequest(View view) {
         DocumentReference documentReference = firebaseFirestore.collection("Complains").document(key);
@@ -107,17 +124,22 @@ public class DetailedRecievedRequest extends AppCompatActivity {
             @Override
             public void onSuccess(Void aVoid) {
                 Toast.makeText(DetailedRecievedRequest.this, "Done", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(getApplicationContext(),UserReceivedRequest.class));
+                startActivity(new Intent(getApplicationContext(), UserReceivedRequest.class));
+                //linearLayout.setVisibility(View.GONE);
             }
         });
 
-        linearLayout.setVisibility(View.GONE);
+
         Intent intent = new Intent(this, UserReceivedRequest.class);
         startActivity(intent);
+        //linearLayout1.setVisibility(View.GONE);
+        Intent i = new Intent(this, UserReceivedRequest.class);
+        startActivity(i);
+
 
     }
 
-    public void cancelRequest(View view){
+    public void cancelRequest(View view) {
 
         DocumentReference documentReference = firebaseFirestore.collection("Complains").document(key);
         status = "reject";
@@ -127,7 +149,7 @@ public class DetailedRecievedRequest extends AppCompatActivity {
             @Override
             public void onSuccess(Void aVoid) {
                 Toast.makeText(DetailedRecievedRequest.this, "Done", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(getApplicationContext(),UserReceivedRequest.class));
+                startActivity(new Intent(getApplicationContext(), UserReceivedRequest.class));
             }
         });
     }
@@ -148,20 +170,21 @@ public class DetailedRecievedRequest extends AppCompatActivity {
                     linearLayout1.setVisibility(View.VISIBLE);
 
                 }
-                if (documentSnapshot.getString("isDriver") != null) {
-                    linearLayout.setVisibility(View.VISIBLE);
-                    linearLayout1.setVisibility(View.GONE);
-                }
+
 
             }
-
         });
     }
 
 
     public void bacckArrow(View view) {
-        Intent intent = new Intent(this, UserReceivedRequest.class);
-        startActivity(intent);
+        onBackPressed();
+        finish();
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }

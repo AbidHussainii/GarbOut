@@ -62,6 +62,7 @@ import com.mapbox.services.android.navigation.ui.v5.NavigationLauncher;
 import com.mapbox.services.android.navigation.ui.v5.NavigationLauncherOptions;
 import com.mapbox.services.android.navigation.ui.v5.route.NavigationMapRoute;
 import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -94,6 +95,10 @@ public class mapBox extends AppCompatActivity implements OnMapReadyCallback, Loc
     ArrayList<String> lonList = new ArrayList<>();
     ArrayList mapList = new ArrayList<LatLng>();
 
+    ///// on marker click data array
+    ArrayList<String> docIDArray = new ArrayList<>();
+    int x = 0;
+
     int i = 0;
 
     FirebaseFirestore fStore;
@@ -101,6 +106,7 @@ public class mapBox extends AppCompatActivity implements OnMapReadyCallback, Loc
     CollectionReference collectionReference;
     DocumentReference documentReference;
     String userID, id, lat, lan, popName;
+           String phoneNo,address,name;
     double dlat, dlan;
 //    Double lat,lan;
 
@@ -417,43 +423,65 @@ public class mapBox extends AppCompatActivity implements OnMapReadyCallback, Loc
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                    for (final QueryDocumentSnapshot documentSnapshot : task.getResult()) {
 
 
-                        id = documentSnapshot.getId();
-                        DocumentReference documentReference = fStore.collection("Complains").document(id);
+                        docIDArray.add(documentSnapshot.getId());
+//                        Toast.makeText(mapBox.this, "" + docIDArray, Toast.LENGTH_SHORT).show();
+
+                        DocumentReference documentReference = fStore.collection("Complains").document(documentSnapshot.getId());
+                        //Toast.makeText(mapBox.this, "" + documentSnapshot.getId(), Toast.LENGTH_SHORT).show();
                         documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
                             @Override
                             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
 
-                                        lat = value.getString("userLat");
+                                lat = value.getString("userLat");
                                 lan = value.getString("userLan");
                                 dlat = Double.parseDouble(lat);
                                 dlan = Double.parseDouble(lan);
+                               // name.add(value.getString("UserName"));
                                 map.addMarker(new MarkerOptions()
                                         .position(new LatLng(dlat, dlan))
-                                        .title("marker : " + 1));
+                                        .title("Name "+name));
+
+
+                                name= value.getString("UserName");
+                                Toast.makeText(mapBox.this, ""+name, Toast.LENGTH_SHORT).show();
+                                phoneNo= value.getString("PhoneNo");
+                                address= value.getString("complainAddress");
+                               final String markerID=documentSnapshot.getId();
+
+                                map.setOnMarkerClickListener(new MapboxMap.OnMarkerClickListener() {
+                                    @Override
+                                    public boolean onMarkerClick(@NonNull Marker marker) {
+//                        myDialog.setContentView(R.layout.pop_up);
+//                        myDialog.show();
+                                        //Toast.makeText(mapBox.this, "" + name.get(x), Toast.LENGTH_SHORT).show();
+                                        Intent intent= new Intent(getApplicationContext(),MarkerInfo.class);
+
+                                        intent.putExtra("name", name);
+                                        intent.putExtra("phoneNo", phoneNo);
+                                        intent.putExtra("address", address);
+                                        intent.putExtra("markerID",markerID);
+                                        startActivity(intent);
+
+                                        return false;
+
+                                    }
+                                });
+
+                            }
+                        });
+                             //   Toast.makeText(mapBox.this, "NAme:"+ name+"phone:"+ phoneNo, Toast.LENGTH_SHORT).show();
 
 
 //                                 Toast.makeText(mapBox.this, "Abid   1" + lan+lat, Toast.LENGTH_SHORT).show();
                             }
-                        });
+                        }
                     }
 
-                }
-                map.setOnMarkerClickListener(new MapboxMap.OnMarkerClickListener() {
-                    @Override
-                    public boolean onMarkerClick(@NonNull Marker marker) {
-                        myDialog.setContentView(R.layout.pop_up);
-                        myDialog.show();
-
-                        return false;
-
-                    }
                 });
 
-            }
-        });
 //        Query query=fStore.collection("Complains").whereIn("")
 //        String newUrl;
 //        //Picasso.get().load(model.getUrl()).into(profileImage);
@@ -546,10 +574,10 @@ public class mapBox extends AppCompatActivity implements OnMapReadyCallback, Loc
 //        super.onBackPressed();
 //    }
 
-    public void back(View view) {
-        Intent intent = new Intent(this, DriverDashboard.class);
-        startActivity(intent);
-    }
+//    public void back(View view) {
+//        Intent intent = new Intent(this, DriverDashboard.class);
+//        startActivity(intent);
+//    }
 
     @SuppressLint("MissingPermission")
     @Override

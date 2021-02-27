@@ -256,7 +256,6 @@
                         android:onClick="cancelRequest"
                         android:text="Delete"
                         android:textColor="@android:color/white"
-
                         android:textSize="20sp"
 
                        />

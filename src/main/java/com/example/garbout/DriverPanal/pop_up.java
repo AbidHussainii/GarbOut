@@ -45,6 +45,8 @@ public class pop_up extends Activity {
         requestLocation = findViewById(R.id.location);
         profile=findViewById(R.id.profile);
 
+        id= getIntent().getStringExtra("doc_id");
+
 
         fAuth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
@@ -59,11 +61,11 @@ public class pop_up extends Activity {
         documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                FullName.setText(value.getString("name"));
+                FullName.setText(value.getString("UserName"));
 
-                phone.setText(value.getString("phoneNumber"));
+                phone.setText(value.getString("PhoneNo"));
 
-                requestLocation.setText(value.getString("address"));
+                requestLocation.setText(value.getString("complainAddress"));
 
             }
         });

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,7 +16,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.garbout.R;
 import com.example.garbout.UserPanal.LoginActivity;
 import com.example.garbout.UserPanal.MainActivity;
+import com.example.garbout.UserPanal.upload;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -31,10 +34,12 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DriverDashboard extends AppCompatActivity {
+    FirebaseFirestore firebaseFirestore;
     FirebaseAuth firebaseAuth;
-    FirebaseFirestore fStore;
     String userID, docId;
     TextView dName, dPhone, dRoute, dCNIC;
 
@@ -45,15 +50,24 @@ public class DriverDashboard extends AppCompatActivity {
     ArrayList<String> latList = new ArrayList<String>();
     Button button;
 
-    String id, lat, lon;
+    String id, lat, lon,status,key;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver_dashboard);
 
-        fStore = FirebaseFirestore.getInstance();
+
+        firebaseFirestore = FirebaseFirestore.getInstance();
+
+        firebaseFirestore = FirebaseFirestore.getInstance();
+
+        key = getIntent().getStringExtra("key");
+
+
         firebaseAuth = FirebaseAuth.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
+        key = getIntent().getStringExtra("key");
         userID = firebaseAuth.getCurrentUser().getUid();
 
         dName = findViewById(R.id.dName);
@@ -66,7 +80,7 @@ public class DriverDashboard extends AppCompatActivity {
     }
 
     public void user_requests(View view) {
-        Intent intent = new Intent(this, UserReceivedRequest.class);
+        Intent intent = new Intent(this, UserReceivedRequest.class).putExtra("status","Pending");
         startActivity(intent);
     }
 
@@ -77,25 +91,24 @@ public class DriverDashboard extends AppCompatActivity {
 
     public void myRoute(View view) {
 
-        Query query = fStore.collection("Complains").whereIn("status", Collections.singletonList("accept"));
+        Query query = firebaseFirestore.collection("Complains").whereIn("status", Collections.singletonList("accept"));
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     int i = 0;
-
-
                     for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                        final upload upload=documentSnapshot.toObject(com.example.garbout.UserPanal.upload.class);
                         id = documentSnapshot.getId();
-                        DocumentReference documentReference = fStore.collection("Complains").document(id);
+                        DocumentReference documentReference = firebaseFirestore.collection("Complains").document(id);
                         documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
                             @Override
                             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                                 //Toast.makeText(mapBox.this, ""+id, Toast.LENGTH_SHORT).show();
 //                lat="30.2072136";
 //                lan="71.3928869";
-                                lat = value.getString("userLat");
-                                lon = value.getString("userLan");
+                                lat = upload.getUserLat();
+                                lon = upload.getUserLan();
                                 docId = id;
 
 
@@ -187,7 +200,7 @@ public class DriverDashboard extends AppCompatActivity {
     }
 
     public void driverData() {
-        final DocumentReference documentReference = fStore.collection("users").document(userID);
+        final DocumentReference documentReference = firebaseFirestore.collection("users").document(userID);
         documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -200,5 +213,9 @@ public class DriverDashboard extends AppCompatActivity {
         });
     }
 
-}
+    public void completedTask(View view) {
+        Intent intent = new Intent(this, DriverTask.class).putExtra("status", "Completed");
+        startActivity(intent);
+    }
 
+    }

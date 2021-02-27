@@ -61,6 +61,9 @@ public class DriverTask extends AppCompatActivity {
         if(status.equals("reject")) {
             query = firestore.collection("Complains").whereIn("status", Collections.singletonList("reject"));
         }
+        if(status.equals("Completed")) {
+            query = firestore.collection("Complains").whereIn("status", Collections.singletonList("Completed"));
+        }
 
         FirestoreRecyclerOptions<upload> options = new FirestoreRecyclerOptions.Builder<upload>()
                 .setQuery(query, upload.class)
@@ -71,7 +74,10 @@ public class DriverTask extends AppCompatActivity {
                 final String DocId = getSnapshots().getSnapshot(position).getId();
                 holder.rName.setText(model.getUserName());
                 holder.rTime.setText(model.getTime());
-                Picasso.get().load(model.getUrl()).into(holder.rImage);
+                holder.rAddress.setText(model.getComplainAddress());
+                Picasso.get().load(String.valueOf(model.getUrl())).into(holder.rImage);
+
+
                 //getting  user profile  image from storage
 //                StorageReference storageReference= FirebaseStorage.getInstance().getReference();
 //                StorageReference profileRef = storageReference.child("Complain Pic").child(userId).child("image.jpg");
