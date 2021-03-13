@@ -12,13 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.garbout.Admin.Admin;
 import com.example.garbout.R;
 import com.example.garbout.UserPanal.MainActivity;
-import com.example.garbout.UserPanal.UserMap;
-import com.example.garbout.UserPanal.upload;
+import com.example.garbout.UserPanal.modelClass;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -33,7 +31,7 @@ import java.util.Collections;
 
 public class UserReceivedRequest extends AppCompatActivity {
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-    private FirestoreRecyclerAdapter<upload, DataViewHolder> adapter;
+    private FirestoreRecyclerAdapter<modelClass, DataViewHolder> adapter;
     RecyclerView recyclerView;
     FirebaseAuth firebaseAuth;
     FirebaseFirestore firebaseFirestore;
@@ -64,13 +62,13 @@ public class UserReceivedRequest extends AppCompatActivity {
 //            query = firestore.collection("Complains");
 //        }
         query = firestore.collection("Complains").whereIn("status", Collections.singletonList("Pending"));
-        FirestoreRecyclerOptions<upload>options=new FirestoreRecyclerOptions.Builder<upload>()
-                .setQuery(query, upload.class)
+        FirestoreRecyclerOptions<modelClass>options=new FirestoreRecyclerOptions.Builder<modelClass>()
+                .setQuery(query, modelClass.class)
                 .build();
         //}
-        adapter= new FirestoreRecyclerAdapter<upload,DataViewHolder>(options) {
+        adapter= new FirestoreRecyclerAdapter<modelClass,DataViewHolder>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull final DataViewHolder holder, int position, @NonNull upload model) {
+            protected void onBindViewHolder(@NonNull final DataViewHolder holder, int position, @NonNull modelClass model) {
                 final String DocId = getSnapshots().getSnapshot(position).getId();
                 holder.rName.setText(model.getUserName());
                 holder.rTime.setText(model.getTime());
@@ -85,6 +83,7 @@ public class UserReceivedRequest extends AppCompatActivity {
                         Intent intent = new Intent(UserReceivedRequest.this, DetailedRecievedRequest.class);
                         intent.putExtra("key", DocId);
                         startActivity(intent);
+                        finish();
 
 
                     }

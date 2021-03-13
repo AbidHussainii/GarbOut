@@ -8,27 +8,22 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.garbout.Admin.Admin;
+import com.example.garbout.Admin.allUsers;
 import com.example.garbout.DriverPanal.DriverDashboard;
 import com.example.garbout.R;
-import com.github.ybq.android.spinkit.sprite.Sprite;
-import com.github.ybq.android.spinkit.style.DoubleBounce;
-import com.github.ybq.android.spinkit.style.FadingCircle;
-import com.github.ybq.android.spinkit.style.ThreeBounce;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -48,14 +43,17 @@ import com.squareup.picasso.Picasso;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 public class UserProfile extends AppCompatActivity {
     EditText username, usermail, usernumber, userpassword, user_CNIC;
     Button updateProfile, deleteUser;
-    ImageView profileImage, selectPic;
+
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
     String userID, key, role;
     TextView userProfileName, editProfile;
+    ImageView profileImage, selectPic;
     String userProfile;
     // private Uri imageUri;
     StorageReference storageReference;
@@ -78,13 +76,15 @@ public class UserProfile extends AppCompatActivity {
 //        selectPic = findViewById(R.id.choosePicture);
         deleteUser = findViewById(R.id.deleteUser);
         // ProgressBar progressBar = (ProgressBar) findViewById(R.id.progress);
-        key = getIntent().getStringExtra("key");
-        role = getIntent().getStringExtra("role");
+
 
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
         userID = fAuth.getCurrentUser().getUid();
         storageReference = FirebaseStorage.getInstance().getReference();
+
+        key = getIntent().getStringExtra("key");
+        role = getIntent().getStringExtra("role");
         //retrieveImageFromFirebase();
         if (role.equals("admin")) {
             retreiveData(key);
@@ -288,6 +288,12 @@ public class UserProfile extends AppCompatActivity {
 
 
     public void updateProfile(View view) {
+        final SweetAlertDialog pDialog = new SweetAlertDialog(UserProfile.this, SweetAlertDialog.PROGRESS_TYPE);
+        pDialog.getProgressHelper().setBarColor(Color.parseColor("#000000"));
+        pDialog.setTitle("Please Wait");
+        pDialog.setTitleText("Loading ...");
+        pDialog.setCancelable(true);
+        pDialog.show();
 
         String uName = username.getText().toString().trim();
         String uMail = usermail.getText().toString().trim();
@@ -304,6 +310,7 @@ public class UserProfile extends AppCompatActivity {
             public void onSuccess(Void aVoid) {
                 Toast.makeText(UserProfile.this, "Profile has been Updated ", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(UserProfile.this, UserProfile.class);
+                pDialog.dismiss();
 
             }
         });

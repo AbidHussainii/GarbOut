@@ -2,7 +2,7 @@ package com.example.garbout.UserPanal;
 
 import com.google.firebase.firestore.DocumentId;
 
-public class upload {
+public class modelClass {
     private String UserName;
     private String Date;
     private String Url1;
@@ -21,10 +21,10 @@ public class upload {
 
 
 
-    public upload() {
+    public modelClass() {
     }
 
-    public upload(String userName, String date, String url, String time, String userPhoto, String Complainaddress, String Name, String PhoneNumber, String Uid,String Lat,String Lan,String docId,String Status) {
+    public modelClass(String userName, String date, String url, String time, String userPhoto, String Complainaddress, String Name, String PhoneNumber, String Uid, String Lat, String Lan, String docId, String Status) {
         UserName = userName;
         Date = date;
         Url1 = url;

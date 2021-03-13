@@ -9,11 +9,14 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -25,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.garbout.DriverPanal.DriverDashboard;
 import com.example.garbout.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -53,6 +57,8 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 public class ComplainFormActivity extends AppCompatActivity {
     ImageView captureImage;
     Button sendForm, chose;
@@ -73,7 +79,8 @@ public class ComplainFormActivity extends AppCompatActivity {
     FirebaseFirestore firebaseFirestore;
     CollectionReference collectionReference;
     DocumentReference documentReference;
-    String userAddress,lat,lan;
+    String userAddress, lat, lan;
+    SweetAlertDialog pDialog;
 //    Double lat;
 //    Double lan;lan
 
@@ -96,8 +103,8 @@ public class ComplainFormActivity extends AppCompatActivity {
         firebaseFirestore = FirebaseFirestore.getInstance();
         collectionReference = firebaseFirestore.collection("Complains");
         userAddress = getIntent().getStringExtra("Address");
-//        lat = getIntent().getDoubleExtra("lat", 0);
-//        lan = getIntent().getDoubleExtra("lan", 0);
+        lat = String.valueOf(getIntent().getDoubleExtra("lat", 0));
+        lan = String.valueOf(getIntent().getDoubleExtra("lan", 0));
         //  geoPoint = new GeoPoint(lat,lan);
 
         Toast.makeText(this, "" + "" + lan, Toast.LENGTH_SHORT).show();
@@ -106,6 +113,8 @@ public class ComplainFormActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
+
+
                 uploadImageToFirebase();
 //                String name = etYourName.getEditText().getText().toString();
 //                String phone = etYourName.getEditText().getText().toString();
@@ -161,43 +170,64 @@ public class ComplainFormActivity extends AppCompatActivity {
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("please Wait...");
         progressDialog.show();
-        final StorageReference fileRef = storageReference.child("Complain Pic").child(userId).child(String.valueOf(System.currentTimeMillis() / 1000));
+        if (captureImage.getDrawable() == null){
+            AlertDialog.Builder builder = new AlertDialog.Builder(ComplainFormActivity.this);
+            builder.setTitle("Image Not Exist");
+            builder.setMessage("You can not Post Complain a WithOut Complain Evidence!!");
+            //builder.setMessage("Deleting this account will result in completely removing your account?");
+            builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            }).show();
 
-        fileRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        imgDown = uri.toString();
-                        getDownload();
-                        Toast.makeText(ComplainFormActivity.this, "Url : " + uri, Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(getApplicationContext(), UserComplains.class));
+            progressDialog.dismiss();
+        }
+        else{
+            //Image Exists!.
+            final StorageReference fileRef = storageReference.child("Complain Pic").child(userId).child(String.valueOf(System.currentTimeMillis() / 1000));
+            fileRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            imgDown = uri.toString();
+                            getDownload();
+                            Toast.makeText(ComplainFormActivity.this, "Url : " + uri, Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(getApplicationContext(), UserComplains.class));
 
-                        //Picasso.get().load(uri).into(captureImage);
-                        progressDialog.dismiss();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(ComplainFormActivity.this, "Failed to get URL", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                progressDialog.dismiss();
-                Toast.makeText(ComplainFormActivity.this, "Uploading Failed", Toast.LENGTH_SHORT).show();
-            }
-        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-                double progressPercent = (100.00 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
-                progressDialog.setMessage("percentage" + (int) progressPercent + "%");
+                            //Picasso.get().load(uri).into(captureImage);
+                            // pDialog.dismiss();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(ComplainFormActivity.this, "Failed to get URL", Toast.LENGTH_SHORT).show();
+                            // pDialog.dismiss();
+                        }
+                    });
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    progressDialog.dismiss();
+                    Toast.makeText(ComplainFormActivity.this, "Uploading Failed", Toast.LENGTH_SHORT).show();
+                }
+            }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+                    double progressPercent = (100.00 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
+                    progressDialog.setMessage("percentage" + (int) progressPercent + "%");
+                   // progressDialog.dismiss();
 
-            }
-        });
+                }
+
+            });
+
+        }
+
+
     }
 
     public void getDownload() {
@@ -239,11 +269,12 @@ public class ComplainFormActivity extends AppCompatActivity {
         PhoneNo = etPhone.getEditText().getText().toString();
         Detail = etDetailReport.getEditText().getText().toString();
         String status = "Pending";
-       // upload upload=new upload(UserName,Detail,currentDate,imgDown,time,userProfile,userAddress,PhoneNo,userId,lat,lan,null,status);
+        // upload upload=new upload(UserName,Detail,currentDate,imgDown,time,userProfile,userAddress,PhoneNo,userId,lat,lan,null,status);
 
         Map<String, Object> complain = new HashMap<>();
         complain.put("UserName", UserName);
         complain.put("PhoneNo", PhoneNo);
+        complain.put("complainAddress", userAddress);
         complain.put("Detail", Detail);
         complain.put("Url1", imgDown);
         complain.put("Date", currentDate);
@@ -251,21 +282,24 @@ public class ComplainFormActivity extends AppCompatActivity {
         complain.put("UserID", userId);
         complain.put("Url", userProfile);
         complain.put("status", status);
-        complain.put("complainAddress", userAddress);
+
         // complain.put("Locations",geoPoint);
-//        complain.put("userLat", lat.toString());
-//        complain.put("userLan", lan.toString());
+        complain.put("userLat", lat);
+        complain.put("userLan", lan);
         complain.put("userProfileUrl", userProfile);
         collectionReference.add(complain).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
             @Override
             public void onComplete(@NonNull Task<DocumentReference> task) {
                 Toast.makeText(ComplainFormActivity.this, "Done", Toast.LENGTH_SHORT).show();
                 new Intent(getApplicationContext(), UserComplains.class);
+
+               // pDialog.dismiss();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Toast.makeText(ComplainFormActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+               // pDialog.dismiss();
             }
         });
 
@@ -274,7 +308,6 @@ public class ComplainFormActivity extends AppCompatActivity {
 
 
     public void accessCamera(View view) {
-        //  cameraPermissions();
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, permmissionCode);
 //            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
@@ -285,6 +318,8 @@ public class ComplainFormActivity extends AppCompatActivity {
 //            }
 
         } else {
+
+
             Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE_CODE);
@@ -292,11 +327,6 @@ public class ComplainFormActivity extends AppCompatActivity {
         }
     }
 
-//    public void cameraPermissions() {
-//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-//            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, REQUEST_IMAGE_CAPTURE_CODE);
-//        }
-//    }
 
 
     @Override
@@ -313,13 +343,10 @@ public class ComplainFormActivity extends AppCompatActivity {
         }
     }
 
-    //    public void chose(View view) {
-//        Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//        startActivityForResult(openGalleryIntent, 1000);
-//    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if (requestCode == REQUEST_IMAGE_CAPTURE_CODE) {
             if (resultCode == RESULT_OK) {
                 Bitmap picture = (Bitmap) data.getExtras().get("data");
@@ -330,17 +357,6 @@ public class ComplainFormActivity extends AppCompatActivity {
                 picture.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
                 Uri path = Uri.parse(MediaStore.Images.Media.insertImage(getApplicationContext().getContentResolver(), picture, "Title", null));
                 imageUri = path;
-
-
-//                imageUri = getImageUri(getApplicationContext(), picture);
-//
-//                imageUri = data.getData();
-//                captureImage.setImageURI(imageUri);
-////                getImageUri(bitmap,imageUri);
-//                 Bitmap bitmap=(Bitmap)data.getExtras().get("data");
-//                captureImage.setImageBitmap(bitmap);
-//                 imageUri = data.getData();
-//                captureImage.setImageURI(imageUri);
 
 
             }
@@ -376,24 +392,19 @@ public class ComplainFormActivity extends AppCompatActivity {
         Intent intent = new Intent(this, UserMap.class);
         startActivity(intent);
     }
-//    @Override
-//    public void onBackPressed() {
-//        super.onBackPressed();
-//
-//    }
-public void retreivingProfile() {
-    documentReference = firebaseFirestore.collection("users").document(userId);
-    documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
-        @Override
-        public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+    public void retreivingProfile() {
+        documentReference = firebaseFirestore.collection("users").document(userId);
+        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
 
-            userProfile = value.getString("Url");
-            Toast.makeText(ComplainFormActivity.this, ""+userProfile, Toast.LENGTH_SHORT).show();
+                userProfile = value.getString("Url");
+                Toast.makeText(ComplainFormActivity.this, "" + userProfile, Toast.LENGTH_SHORT).show();
 
-        }
-    });
+            }
+        });
 
-}
+    }
 }
 
 

@@ -42,11 +42,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".DriverPanal.testMapBox"></activity>
+
         <activity android:name=".DriverPanal.MarkerInfo" />
-        <activity android:name=".UserPanal.contactUs" />
-        <activity android:name=".Admin.allDriver" />
-        <activity android:name=".UserPanal.allUsers" />
+        <activity android:name=".UserPanal.aboutUs" />
+       <activity android:name=".Admin.allUsers"/>
+        <activity android:name=".DriverPanal.allDriver"/>
         <activity android:name=".Admin.Admin" />
         <activity android:name=".DriverPanal.mapBox" />
 
@@ -102,5 +102,6 @@
         </activity>
         <activity android:name=".UserPanal.MainActivity" />
     </application>
+    <uses-permission android:name='android.permission.CALL_PHONE' />
 
 </manifest>

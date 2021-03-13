@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.garbout.R;
@@ -64,7 +65,9 @@ import com.mapbox.services.android.navigation.ui.v5.route.NavigationMapRoute;
 import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
@@ -98,15 +101,14 @@ public class mapBox extends AppCompatActivity implements OnMapReadyCallback, Loc
     ///// on marker click data array
     ArrayList<String> docIDArray = new ArrayList<>();
     int x = 0;
-
     int i = 0;
-
+    TextView currentDayDate,completedTaskCounter,acceptedTaskCounter;
     FirebaseFirestore fStore;
     FirebaseAuth firebaseAuth;
     CollectionReference collectionReference;
     DocumentReference documentReference;
     String userID, id, lat, lan, popName;
-           String phoneNo,address,name;
+    String phoneNo, address, name;
     double dlat, dlan;
 //    Double lat,lan;
 
@@ -114,8 +116,13 @@ public class mapBox extends AppCompatActivity implements OnMapReadyCallback, Loc
     //.......gps Enabling
     private LocationSettingsRequest.Builder builder;
     private static final int CHECK_REQUEST_CODE = 109;
-    //...........reverse geocoding
 
+////////////////curren date and time ///////////////
+    private TextView dateTimeDisplay;
+    private Calendar calendar;
+    private SimpleDateFormat dateFormat;
+    private String date,acceptedCounter,completedCounter;
+    String mapDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,22 +144,29 @@ public class mapBox extends AppCompatActivity implements OnMapReadyCallback, Loc
         mapView.getMapAsync(this);
         myDialog = new Dialog(this);
 
+///////////getting values from previous activities/////////
         id = getIntent().getStringExtra("docId");
-        //gettingCordinate();
+        acceptedCounter=getIntent().getStringExtra("acceptedCounter");
+        completedCounter=getIntent().getStringExtra("completedCounter");
+
+        ////////////////////hooks/////////////////
+        currentDayDate=findViewById(R.id.currentDayDate);
+        completedTaskCounter=findViewById(R.id.completedTaskCounter);
+        acceptedTaskCounter=findViewById(R.id.acceptedTaskCounter);
+
+        completedTaskCounter.setText(completedCounter);
+        acceptedTaskCounter.setText(acceptedCounter);
+
+        ///////getting date //////
+        calendar = Calendar.getInstance();
+        dateFormat = new SimpleDateFormat("EEE.dd/MM/yyyy");
+        date = dateFormat.format(calendar.getTime());
+        currentDayDate.setText(date);
+         mapDate=String.valueOf(currentDayDate);
 
 
-//        collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                if(task.isSuccessful()){
-//                    QueryDocumentSnapshot documentSnapshot : task.getResult();
-//                    DocumentCollections documentCollections = task.getResult().;
-//                }
-//            }
-//        });
 
 
-////reverse
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -424,8 +438,6 @@ public class mapBox extends AppCompatActivity implements OnMapReadyCallback, Loc
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     for (final QueryDocumentSnapshot documentSnapshot : task.getResult()) {
-
-
                         docIDArray.add(documentSnapshot.getId());
 //                        Toast.makeText(mapBox.this, "" + docIDArray, Toast.LENGTH_SHORT).show();
 
@@ -439,17 +451,18 @@ public class mapBox extends AppCompatActivity implements OnMapReadyCallback, Loc
                                 lan = value.getString("userLan");
                                 dlat = Double.parseDouble(lat);
                                 dlan = Double.parseDouble(lan);
-                               // name.add(value.getString("UserName"));
+                                Toast.makeText(mapBox.this, "" + dlat, Toast.LENGTH_SHORT).show();
+                                // name.add(value.getString("UserName"));
                                 map.addMarker(new MarkerOptions()
                                         .position(new LatLng(dlat, dlan))
-                                        .title("Name "+name));
+                                        .title("Name " + name));
 
 
-                                name= value.getString("UserName");
-                                Toast.makeText(mapBox.this, ""+name, Toast.LENGTH_SHORT).show();
-                                phoneNo= value.getString("PhoneNo");
-                                address= value.getString("complainAddress");
-                               final String markerID=documentSnapshot.getId();
+                                name = value.getString("UserName");
+                                Toast.makeText(mapBox.this, "" + name, Toast.LENGTH_SHORT).show();
+                                phoneNo = value.getString("PhoneNo");
+                                address = value.getString("complainAddress");
+                                final String markerID = documentSnapshot.getId();
 
                                 map.setOnMarkerClickListener(new MapboxMap.OnMarkerClickListener() {
                                     @Override
@@ -457,12 +470,13 @@ public class mapBox extends AppCompatActivity implements OnMapReadyCallback, Loc
 //                        myDialog.setContentView(R.layout.pop_up);
 //                        myDialog.show();
                                         //Toast.makeText(mapBox.this, "" + name.get(x), Toast.LENGTH_SHORT).show();
-                                        Intent intent= new Intent(getApplicationContext(),MarkerInfo.class);
+                                        Intent intent = new Intent(getApplicationContext(), MarkerInfo.class);
 
                                         intent.putExtra("name", name);
                                         intent.putExtra("phoneNo", phoneNo);
                                         intent.putExtra("address", address);
-                                        intent.putExtra("markerID",markerID);
+                                        intent.putExtra("markerID", markerID);
+                                        intent.putExtra("mapDate",mapDate);
                                         startActivity(intent);
 
                                         return false;
@@ -472,15 +486,15 @@ public class mapBox extends AppCompatActivity implements OnMapReadyCallback, Loc
 
                             }
                         });
-                             //   Toast.makeText(mapBox.this, "NAme:"+ name+"phone:"+ phoneNo, Toast.LENGTH_SHORT).show();
+                        //   Toast.makeText(mapBox.this, "NAme:"+ name+"phone:"+ phoneNo, Toast.LENGTH_SHORT).show();
 
 
 //                                 Toast.makeText(mapBox.this, "Abid   1" + lan+lat, Toast.LENGTH_SHORT).show();
-                            }
-                        }
                     }
+                }
+            }
 
-                });
+        });
 
 //        Query query=fStore.collection("Complains").whereIn("")
 //        String newUrl;
@@ -632,5 +646,10 @@ public class mapBox extends AppCompatActivity implements OnMapReadyCallback, Loc
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         mapView.onSaveInstanceState(outState);
+    }
+
+    public void completedTaskList(View view) {
+        Intent intent = new Intent(this, DriverTask.class).putExtra("status", "Completed");
+        startActivity(intent);
     }
 }

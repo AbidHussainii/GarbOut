@@ -7,15 +7,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.example.garbout.DriverPanal.DriverTask;
 import com.example.garbout.DriverPanal.UserReceivedRequest;
+import com.example.garbout.DriverPanal.allDriver;
 import com.example.garbout.R;
 import com.example.garbout.UserPanal.LoginActivity;
 import com.example.garbout.UserPanal.SignUpActivity;
-import com.example.garbout.UserPanal.allUsers;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -25,6 +26,7 @@ public class Admin extends AppCompatActivity {
     FirebaseFirestore fStore;
     String userID, var;
     ImageView addDriver;
+    Button allUsers,allDrivers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +37,10 @@ public class Admin extends AppCompatActivity {
         driverLayout = findViewById(R.id.driverLayout);
         driver1Layout = findViewById(R.id.driver1Layout);
         addDriver = findViewById(R.id.addDriver);
+        allUsers=findViewById(R.id .allUsers);
+        allDrivers=findViewById(R.id.allDrivers);
+
+
         //------------------- setting layouts------------------//
         userLayout.setVisibility(View.VISIBLE);
         user1Layout.setVisibility(View.VISIBLE);
@@ -43,10 +49,37 @@ public class Admin extends AppCompatActivity {
         driver1Layout.setVisibility(View.GONE);
 
 
+
         //--------------------------------------------------//
         fStore = FirebaseFirestore.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
         userID = firebaseAuth.getCurrentUser().getUid();
+
+        //---------------------------------------//
+        allUsers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                userLayout.setVisibility(View.VISIBLE);
+                user1Layout.setVisibility(View.VISIBLE);
+
+                driverLayout.setVisibility(View.GONE);
+                driver1Layout.setVisibility(View.GONE);
+                addDriver.setVisibility(View.GONE);
+                allUsers.setBackgroundResource(R.drawable.background_gradient);
+            }
+        });
+        allDrivers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                userLayout.setVisibility(View.GONE);
+                user1Layout.setVisibility(View.GONE);
+                driverLayout.setVisibility(View.VISIBLE);
+                driver1Layout.setVisibility(View.VISIBLE);
+                addDriver.setVisibility(View.VISIBLE);
+                allDrivers.setBackgroundResource(R.drawable.background_gradient);
+
+            }
+        });
 
 //        final DocumentReference documentReference = fStore.collection("users").document(firebaseAuth.getCurrentUser().getUid());
 //        documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -79,10 +112,8 @@ public class Admin extends AppCompatActivity {
     public void alldrivers(View view) {
         userLayout.setVisibility(View.GONE);
         user1Layout.setVisibility(View.GONE);
-
         driverLayout.setVisibility(View.VISIBLE);
         driver1Layout.setVisibility(View.VISIBLE);
-
         addDriver.setVisibility(View.VISIBLE);
 
 
@@ -190,4 +221,6 @@ public class Admin extends AppCompatActivity {
     }
 
 
+    public void driverProfile(View view) {
+    }
 }

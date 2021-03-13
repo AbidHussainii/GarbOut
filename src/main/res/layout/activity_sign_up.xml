@@ -131,7 +131,7 @@
                 app:endIconMode="clear_text"
                 app:endIconTint="@color/colorPrimaryDark"
                 app:hintTextColor="@color/colorPrimaryDark"
-                app:passwordToggleEnabled="true"
+               app:passwordToggleEnabled="true"
                 app:startIconDrawable="@drawable/ic_password"
                 app:startIconTint="@color/colorPrimaryDark">
 

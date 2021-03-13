@@ -30,7 +30,7 @@ public class UserComplains extends AppCompatActivity {
 
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
     private CollectionReference collectionReference = firestore.collection("Complains");
-    private FirestoreRecyclerAdapter<upload, DataViewHolder> adapter;
+    private FirestoreRecyclerAdapter<modelClass, DataViewHolder> adapter;
     private ProgressBar mProgressCircle;
     RecyclerView recyclerView;
     StorageReference storagereference;
@@ -56,12 +56,12 @@ public class UserComplains extends AppCompatActivity {
         Query query = firestore.collection("Complains").whereIn("UserID", Collections.singletonList(userId));
 
         //RecyclerOptions
-        FirestoreRecyclerOptions<upload> options = new FirestoreRecyclerOptions.Builder<upload>()
-                .setQuery(query, upload.class)
+        FirestoreRecyclerOptions<modelClass> options = new FirestoreRecyclerOptions.Builder<modelClass>()
+                .setQuery(query, modelClass.class)
                 .build();
-        adapter = new FirestoreRecyclerAdapter<upload, DataViewHolder>(options) {
+        adapter = new FirestoreRecyclerAdapter<modelClass, DataViewHolder>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull DataViewHolder holder, int position, @NonNull upload model) {
+            protected void onBindViewHolder(@NonNull DataViewHolder holder, int position, @NonNull modelClass model) {
                 final String DocId = getSnapshots().getSnapshot(position).getId();
                 holder.nameOfUser_f.setText(model.getUserName());
                 holder.showdate.setText(model.getDate());

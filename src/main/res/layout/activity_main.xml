@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context=".UserPanal.MainActivity"
-    tools:openDrawer="left">
+    tools:openDrawer="">
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation"
@@ -90,7 +90,8 @@
                 android:layout_margin="12dp"
                 android:onClick="post_complain"
                 app:cardCornerRadius="12dp"
-                app:cardElevation="10dp">
+                app:cardElevation="10dp"
+                >
 
                 <LinearLayout
                     android:layout_width="match_parent"

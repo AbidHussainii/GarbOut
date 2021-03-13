@@ -1,7 +1,6 @@
-package com.example.garbout.UserPanal;
+package com.example.garbout.Admin;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,27 +16,19 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.garbout.R;
+import com.example.garbout.UserPanal.UserProfile;
+import com.example.garbout.UserPanal.modelClass;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
-import java.util.Collections;
-
 public class allUsers extends AppCompatActivity {
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-    private FirestoreRecyclerAdapter<upload, allUsers.DataViewHolder> adapter;
+    private FirestoreRecyclerAdapter<modelClass, allUsers.DataViewHolder> adapter;
 
     RecyclerView recyclerView;
     FirebaseAuth firebaseAuth;
@@ -107,12 +98,12 @@ public class allUsers extends AppCompatActivity {
         //.whereIn("UserID", Collections.singletonList(userId));
 
         //RecyclerOptions
-        FirestoreRecyclerOptions<upload> options = new FirestoreRecyclerOptions.Builder<upload>()
-                .setQuery(query, upload.class)
+        FirestoreRecyclerOptions<modelClass> options = new FirestoreRecyclerOptions.Builder<modelClass>()
+                .setQuery(query, modelClass.class)
                 .build();
-        adapter = new FirestoreRecyclerAdapter<upload, DataViewHolder>(options) {
+        adapter = new FirestoreRecyclerAdapter<modelClass, DataViewHolder>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull DataViewHolder holder, int position, @NonNull upload model) {
+            protected void onBindViewHolder(@NonNull DataViewHolder holder, int position, @NonNull modelClass model) {
                 final String DocId = getSnapshots().getSnapshot(position).getId();
                 holder.nameOfUser_f.setText(model.getName());
                 Picasso.get().load(String.valueOf(model.getUrl())).into(holder.userProfilePicture);

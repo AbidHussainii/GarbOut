@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 import com.example.garbout.R;
 
-public class contactUs extends AppCompatActivity {
+public class aboutUs extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

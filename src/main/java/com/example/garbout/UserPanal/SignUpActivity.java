@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -19,11 +20,12 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-
 import java.util.HashMap;
 import java.util.Map;
+import com.google.firebase.firestore.DocumentSnapshot;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class SignUpActivity extends AppCompatActivity {
     TextInputLayout user_name, user_mail, user_number, user_password, user_CNIC;
@@ -53,7 +55,12 @@ public class SignUpActivity extends AppCompatActivity {
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(SignUpActivity.this, "Please Wait", Toast.LENGTH_SHORT).show();
+                final SweetAlertDialog pDialog = new SweetAlertDialog(SignUpActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+                pDialog.getProgressHelper().setBarColor(Color.parseColor("#000000"));
+                pDialog.setTitle("Please Wait");
+                pDialog.setTitleText("Loading ...");
+                pDialog.setCancelable(true);
+                pDialog.show();
 
 //                if (!validateName() | !validateEmail() | !validatePhoneNo() | !validatePassword()|!validateCNIC()){
 //                    return;
@@ -95,6 +102,7 @@ public class SignUpActivity extends AppCompatActivity {
                                         startActivity(intent);
                                     }
 //                                    checkUser();
+                                    pDialog.dismiss();
 
 
                                 }
@@ -102,10 +110,12 @@ public class SignUpActivity extends AppCompatActivity {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
                                     Toast.makeText(SignUpActivity.this, "Failed Account Creation", Toast.LENGTH_SHORT).show();
+                                    pDialog.dismiss();
                                 }
                             });
                         } else {
                             Toast.makeText(SignUpActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                            pDialog.dismiss();
                         }
 
                     }

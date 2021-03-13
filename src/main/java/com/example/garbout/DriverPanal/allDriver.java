@@ -1,4 +1,4 @@
-package com.example.garbout.Admin;
+package com.example.garbout.DriverPanal;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,10 +16,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.garbout.Admin.Admin;
 import com.example.garbout.R;
-import com.example.garbout.UserPanal.UserMap;
 import com.example.garbout.UserPanal.UserProfile;
-import com.example.garbout.UserPanal.upload;
+import com.example.garbout.UserPanal.modelClass;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,7 +30,7 @@ import com.google.firebase.storage.StorageReference;
 public class allDriver extends AppCompatActivity {
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
-    private FirestoreRecyclerAdapter<upload, allDriver.DataViewHolder> adapter;
+    private FirestoreRecyclerAdapter<modelClass, allDriver.DataViewHolder> adapter;
 
     RecyclerView recyclerView;
     FirebaseAuth firebaseAuth;
@@ -59,12 +59,12 @@ public class allDriver extends AppCompatActivity {
         Query query = firestore.collection("users").whereEqualTo("isDriver", "2");
 
         //RecyclerOptions
-        FirestoreRecyclerOptions<upload> options = new FirestoreRecyclerOptions.Builder<upload>()
-                .setQuery(query, upload.class)
+        FirestoreRecyclerOptions<modelClass> options = new FirestoreRecyclerOptions.Builder<modelClass>()
+                .setQuery(query, modelClass.class)
                 .build();
-        adapter = new FirestoreRecyclerAdapter<upload, allDriver.DataViewHolder>(options) {
+        adapter = new FirestoreRecyclerAdapter<modelClass, allDriver.DataViewHolder>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull allDriver.DataViewHolder holder, int position, @NonNull upload model) {
+            protected void onBindViewHolder(@NonNull allDriver.DataViewHolder holder, int position, @NonNull modelClass model) {
                 final String DocId = getSnapshots().getSnapshot(position).getId();
                 holder.driverName.setText(model.getName());
                 holder.driverPhone.setText(model.getPhoneNumber());

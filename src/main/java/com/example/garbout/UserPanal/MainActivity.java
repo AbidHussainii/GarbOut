@@ -36,6 +36,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     ActionBarDrawerToggle actionBarDrawerToggle;
     DrawerLayout drawerLayout;
@@ -48,6 +50,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     String userID, key, role;
     String userProfile;
     StorageReference storageReference;
+    ////////////////////
+    private static final int TIME_INTERVAL = 2000; // # milliseconds, desired time passed between two back presses.
+    private long mBackPressed;
 
 
     @Override
@@ -98,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void about_us(View view) {
-        Intent intent = new Intent(getApplicationContext(), contactUs.class);
+        Intent intent = new Intent(getApplicationContext(), aboutUs.class);
         startActivity(intent);
 
     }
@@ -169,46 +174,58 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 finish();
                 break;
             case R.id.nav_logout:
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setTitle("Are you sure want to Logout?");
-                //builder.setMessage("Deleting this account will result in completely removing your account?");
+                new SweetAlertDialog(MainActivity.this, SweetAlertDialog.WARNING_TYPE)
+                        .setTitleText("Are you sure?")
+                        .setContentText("Are you sure want to Logout?")
+                        .setConfirmText("LogOut")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                fAuth.signOut();
+                                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                                startActivity(intent);
+                                sDialog.dismissWithAnimation();
+                            }
+                        })
+                        .setCancelButton("Cancel", new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
 
-                builder.setPositiveButton("LogOut", new DialogInterface.OnClickListener() {
-
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Do nothing but close the dialog
-//                        fStore.collection("users").document(key).delete()
-//                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                                    @Override
-//                                    public void onSuccess(Void aVoid) {
-//                                        Toast.makeText(UserProfile.this, "User successfully deleted!", Toast.LENGTH_SHORT).show();
-//                                        startActivity(new Intent(getApplicationContext(), allUsers.class));
-//                                    }
-//                                });
-                        fAuth.signOut();
-                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                        startActivity(intent);
-                        dialog.dismiss();
-
-                    }
-                });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        // Do nothing
-                        dialog.dismiss();
-                    }
-                });
-
-                AlertDialog alert = builder.create();
-                alert.show();
-//                fAuth.signOut();
-//                intent = new Intent(this, LoginActivity.class);
-//                startActivity(intent);
-//                finish();
+                                sDialog.dismissWithAnimation();
+                            }
+                        })
+                        .show();
                 break;
+
+//                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+//                builder.setTitle("Are you sure want to Logout?");
+//                //builder.setMessage("Deleting this account will result in completely removing your account?");
+//
+//                builder.setPositiveButton("LogOut", new DialogInterface.OnClickListener() {
+//
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        fAuth.signOut();
+//                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+//                        startActivity(intent);
+//                        dialog.dismiss();
+//
+//                    }
+//                });
+//                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//
+//                        // Do nothing
+//                        dialog.dismiss();
+//                    }
+//                });
+//
+//                AlertDialog alert = builder.create();
+//                alert.show();
+////
+
+
             case R.id.nav_shareApp:
                 try {
 
@@ -229,19 +246,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+
     @Override
     public void onBackPressed() {
-        new AlertDialog.Builder(this)
-                .setTitle("Really Exit?")
-                .setMessage("Are you sure you want to exit?")
-                .setNegativeButton(android.R.string.no, null)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+        if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis()) {
+            super.onBackPressed();
+            return;
+        } else {
+            Toast.makeText(getBaseContext(), "Tap back button in order to exit", Toast.LENGTH_SHORT).show();
+        }
 
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        setResult(RESULT_OK, new Intent().putExtra("EXIT", true));
-                        finish();
-                    }
-
-                }).create().show();
+        mBackPressed = System.currentTimeMillis();
     }
 }

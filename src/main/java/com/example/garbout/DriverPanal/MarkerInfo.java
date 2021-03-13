@@ -29,6 +29,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -52,15 +54,15 @@ import java.util.Map;
 public class MarkerInfo extends AppCompatActivity {
     TextView FullName, requestLocation, phone;
     FirebaseAuth fAuth;
-    FirebaseFirestore firestore;
+    // FirebaseFirestore firestore;
     DocumentReference documentReference;
     String userID, driverEvidence;
-    ImageView  cameraIcon, driverClickedPicture;
+    ImageView cameraIcon, driverClickedPicture, callIcon;
     Button sendingCompletedReuest;
     TextView text;
     private Uri imageUri;
     private String imgDown;
-    String name, phoneNo, address, markerID;
+    String name, phoneNo, address, markerID,date;
     public int REQUEST_IMAGE_CAPTURE_CODE = 103;
     public int permmissionCode = 22;
     String userId, key;
@@ -69,6 +71,8 @@ public class MarkerInfo extends AppCompatActivity {
     StorageReference storageReference;
     FirebaseFirestore firebaseFirestore;
     CollectionReference collectionReference;
+    DocumentSnapshot documentSnapshot;
+
 
 
     @Override
@@ -80,6 +84,10 @@ public class MarkerInfo extends AppCompatActivity {
         phoneNo = getIntent().getStringExtra("phoneNo");
         address = getIntent().getStringExtra("address");
         markerID = getIntent().getStringExtra("markerID");
+       // date=getIntent().getStringExtra("mapDate");
+
+
+        //documentSnapshot=firebaseFirestore.
 
 
         // userProfile = findViewById(R.id.userProfile);
@@ -89,9 +97,11 @@ public class MarkerInfo extends AppCompatActivity {
         requestLocation = findViewById(R.id.address_M);
         cameraIcon = findViewById(R.id.camerIcon);
         text = findViewById(R.id.text);
-        sendingCompletedReuest=findViewById(R.id.sendingComplain);
+        sendingCompletedReuest = findViewById(R.id.sendingComplain);
+        callIcon = findViewById(R.id.call_icon);
         Toast.makeText(this, "" + markerID, Toast.LENGTH_SHORT).show();
         //   profile = findViewById(R.id.profile);
+
 
         FullName.setText(name);
         phone.setText(phoneNo);
@@ -99,17 +109,36 @@ public class MarkerInfo extends AppCompatActivity {
         //  Picasso.get().load(picture).into(userProfile);
 
         fAuth = FirebaseAuth.getInstance();
-        firestore = FirebaseFirestore.getInstance();
+        firebaseFirestore = FirebaseFirestore.getInstance();
         userID = fAuth.getCurrentUser().getUid();
         storageReference = FirebaseStorage.getInstance().getReference();
-        // Toast.makeText(this, ""+userID, Toast.LENGTH_SHORT).show();
-        /////////////////////
-        //retreiveUserProfile();
+
+
         key = getIntent().getStringExtra("key");
         sendingCompletedReuest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 uploadImageToFirebase();
+            }
+        });
+
+        ///////////call icon ///////////
+
+        callIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Toast.makeText(MarkerInfo.this, ""+phoneNo, Toast.LENGTH_SHORT).show();
+                //String mobile=documentSnapshot.getString("phoneNumber");
+//               String call=phoneNo;
+//               Intent i= new Intent(Intent.ACTION_DIAL);
+//               i.setData(Uri.parse("03117124299");
+//              startActivity(i);
+//                String number = "03117124299";
+//                Intent callIntent = new Intent(Intent.ACTION_CALL);
+//                callIntent.setData(Uri.parse("tel:" + number));//change the number
+//                startActivity(callIntent);
+
+
             }
         });
     }
@@ -157,12 +186,12 @@ public class MarkerInfo extends AppCompatActivity {
                 driverClickedPicture.setImageBitmap(picture);
 
 
-               // Toast.makeText(this, "1st : " + picture, Toast.LENGTH_SHORT).show();
+                // Toast.makeText(this, "1st : " + picture, Toast.LENGTH_SHORT).show();
                 ByteArrayOutputStream bytes = new ByteArrayOutputStream();
                 picture.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
                 Uri path = Uri.parse(MediaStore.Images.Media.insertImage(getApplicationContext().getContentResolver(), picture, "Title", null));
                 imageUri = path;
-                Toast.makeText(this, ""+imageUri, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "" + imageUri, Toast.LENGTH_SHORT).show();
                 driverClickedPicture.setVisibility(View.VISIBLE);
                 cameraIcon.setVisibility(View.GONE);
                 text.setVisibility(View.GONE);
@@ -184,15 +213,16 @@ public class MarkerInfo extends AppCompatActivity {
 
     public void sendCompletedRequest() {
         String status = "Completed";
-        DocumentReference documentReference = firestore.collection("Complains").document(markerID);
+        DocumentReference documentReference = firebaseFirestore.collection("Complains").document(markerID);
         Map<String, Object> complain = new HashMap<>();
         complain.put("status", status);
-        complain.put("evidence",imgDown );
+        complain.put("evidence", imgDown);
         documentReference.update(complain).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Toast.makeText(MarkerInfo.this, "done", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(getApplicationContext(), mapBox.class));
+                finish();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -218,7 +248,8 @@ public class MarkerInfo extends AppCompatActivity {
 //    }
 
     }
-    private void uploadImageToFirebase(){
+
+    private void uploadImageToFirebase() {
         //String status = "Completed";
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("please Wait...");
@@ -260,6 +291,8 @@ public class MarkerInfo extends AppCompatActivity {
             }
         });
     }
+
+
 }
 
 
