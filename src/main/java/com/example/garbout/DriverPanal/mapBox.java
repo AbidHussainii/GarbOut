@@ -1,9 +1,5 @@
 package com.example.garbout.DriverPanal;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
@@ -16,8 +12,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.garbout.R;
-import com.example.garbout.UserPanal.UserMap;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.LocationRequest;
@@ -63,7 +62,6 @@ import com.mapbox.services.android.navigation.ui.v5.NavigationLauncher;
 import com.mapbox.services.android.navigation.ui.v5.NavigationLauncherOptions;
 import com.mapbox.services.android.navigation.ui.v5.route.NavigationMapRoute;
 import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
-import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -74,10 +72,6 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconIgnorePlacement;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
 
 public class mapBox extends AppCompatActivity implements OnMapReadyCallback, LocationEngineListener,
         PermissionsListener, MapboxMap.OnMapClickListener {
@@ -190,7 +184,6 @@ public class mapBox extends AppCompatActivity implements OnMapReadyCallback, Loc
         retrieveCordinateFromFirebase();
 
         latList = getIntent().getStringArrayListExtra("latList");
-
         lonList = getIntent().getStringArrayListExtra("lonList");
 
 
@@ -582,16 +575,6 @@ public class mapBox extends AppCompatActivity implements OnMapReadyCallback, Loc
             }
         });
     }
-//
-//    @Override
-//    public void onBackPressed() {
-//        super.onBackPressed();
-//    }
-
-//    public void back(View view) {
-//        Intent intent = new Intent(this, DriverDashboard.class);
-//        startActivity(intent);
-//    }
 
     @SuppressLint("MissingPermission")
     @Override

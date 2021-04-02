@@ -16,8 +16,6 @@ import android.widget.TextView;
 import com.example.garbout.Admin.Admin;
 import com.example.garbout.R;
 import com.example.garbout.UserPanal.MainActivity;
-import com.example.garbout.UserPanal.UserComplainDetail;
-import com.example.garbout.UserPanal.UserMap;
 import com.example.garbout.UserPanal.modelClass;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;

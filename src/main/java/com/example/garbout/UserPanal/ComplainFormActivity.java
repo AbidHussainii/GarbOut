@@ -26,6 +26,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.garbout.DriverPanal.DriverDashboard;
@@ -81,6 +82,13 @@ public class ComplainFormActivity extends AppCompatActivity {
     DocumentReference documentReference;
     String userAddress, lat, lan;
     SweetAlertDialog pDialog;
+
+    ////////////////curren date and time ///////////////
+    private TextView dateTimeDisplay;
+    private Calendar calendar;
+    private SimpleDateFormat dateFormat;
+    private String date,acceptedCounter,completedCounter;
+    String mapDate;
 //    Double lat;
 //    Double lan;lan
 
@@ -102,6 +110,7 @@ public class ComplainFormActivity extends AppCompatActivity {
         storageReference = firebaseStorage.getReference();
         firebaseFirestore = FirebaseFirestore.getInstance();
         collectionReference = firebaseFirestore.collection("Complains");
+        //.document(date).collection("Complains2");
         userAddress = getIntent().getStringExtra("Address");
         lat = String.valueOf(getIntent().getDoubleExtra("lat", 0));
         lan = String.valueOf(getIntent().getDoubleExtra("lan", 0));
@@ -161,6 +170,10 @@ public class ComplainFormActivity extends AppCompatActivity {
 
         });
         retreivingProfile();
+        calendar = Calendar.getInstance();
+        dateFormat = new SimpleDateFormat("EEE.dd/MM/yyyy");
+        date = dateFormat.format(calendar.getTime());
+
 
     }
 
@@ -388,10 +401,10 @@ public class ComplainFormActivity extends AppCompatActivity {
 //    }
 
 
-    public void backArrow(View view) {
+    /*public void backArrow(View view) {
         Intent intent = new Intent(this, UserMap.class);
         startActivity(intent);
-    }
+    }*/
     public void retreivingProfile() {
         documentReference = firebaseFirestore.collection("users").document(userId);
         documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {

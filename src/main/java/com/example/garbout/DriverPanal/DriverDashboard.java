@@ -60,9 +60,9 @@ public class DriverDashboard extends AppCompatActivity {
     TextView totelRequest;
     TextView completedRequest;
     TextView remainingRequest;
-    String completedC,pendingC,acceptedC;
+    String completedC, pendingC, acceptedC;
     ImageView driverProfile;
-    int j,a,c=5,p;
+    int j, a, c = 5, p;
 
     LatLng ali = new LatLng(30.2072136, 71.3928869);
 
@@ -92,7 +92,7 @@ public class DriverDashboard extends AppCompatActivity {
         completedRequest = findViewById(R.id.completedRequest);
         remainingRequest = findViewById(R.id.remainingRequest);
 
-       // Toast.makeText(this, ""+c, Toast.LENGTH_SHORT).show();
+        // Toast.makeText(this, ""+c, Toast.LENGTH_SHORT).show();
 
 
 //        dName = findViewById(R.id.dName);
@@ -109,8 +109,9 @@ public class DriverDashboard extends AppCompatActivity {
     }
 
     public void user_requests(View view) {
-        Intent intent = new Intent(this, UserReceivedRequest.class).putExtra("status", "Pending");
-        startActivity(intent);
+//        Intent intent = new Intent(this, UserReceivedRequest.class).putExtra("status", "Pending");
+//        startActivity(intent);
+        makePhoneCall();
     }
 
     public void myTask(View view) {
@@ -118,7 +119,7 @@ public class DriverDashboard extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void myRoute(View view){
+    public void myRoute(View view) {
 
         Query query = firebaseFirestore.collection("Complains").whereIn("status", Collections.singletonList("accept"));
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -159,14 +160,13 @@ public class DriverDashboard extends AppCompatActivity {
             }
         });
 
-        Intent intent = new Intent(this, mapBox.class)
-
+        /*Intent intent = new Intent(this, mapBox.class)
                 .putStringArrayListExtra("latList", latList).putStringArrayListExtra("lonList", lonList);
         intent.putExtra("docId", docId);
-       intent.putExtra("completedCounter",completedC);
-       intent.putExtra("acceptedCounter",acceptedC);
+        intent.putExtra("completedCounter", completedC);
+        intent.putExtra("acceptedCounter", acceptedC);
 
-        startActivity(intent);
+        startActivity(intent);*/
 
 
     }
@@ -270,13 +270,12 @@ public class DriverDashboard extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                     a = 0;
+                    a = 0;
                     for (final QueryDocumentSnapshot documentSnapshot : task.getResult()) {
                         a = a + 1;
 
                     }
                     totelRequest.setText(String.valueOf(a));
-
 
 
                 }
@@ -293,14 +292,14 @@ public class DriverDashboard extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                     c = 0;
+                    c = 0;
                     for (final QueryDocumentSnapshot documentSnapshot : task.getResult()) {
                         c = c + 1;
-                        completedC=String.valueOf(c);
+                        completedC = String.valueOf(c);
 
                     }
                     completedRequest.setText(String.valueOf(completedC));
-                    }
+                }
 
             }
 
@@ -318,7 +317,7 @@ public class DriverDashboard extends AppCompatActivity {
                     j = 0;
                     for (final QueryDocumentSnapshot documentSnapshot : task.getResult()) {
                         j = j + 1;
-                        acceptedC=String.valueOf(j);
+                        acceptedC = String.valueOf(j);
 
                     }
                     remainingRequest.setText(String.valueOf(acceptedC));
@@ -333,7 +332,7 @@ public class DriverDashboard extends AppCompatActivity {
 
 
     private void makePhoneCall() {
-        String number = "03117124299" ;
+        String number = "03117124299";
         if (number.trim().length() > 0) {
             if (ContextCompat.checkSelfPermission(DriverDashboard.this,
                     Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
@@ -347,6 +346,7 @@ public class DriverDashboard extends AppCompatActivity {
             Toast.makeText(DriverDashboard.this, "Enter Phone Number", Toast.LENGTH_SHORT).show();
         }
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);

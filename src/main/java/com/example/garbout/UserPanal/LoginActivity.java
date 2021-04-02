@@ -121,13 +121,16 @@ public class LoginActivity extends AppCompatActivity {
                 if (documentSnapshot.getString("isAdmin") != null) {
                     Toast.makeText(LoginActivity.this, "Admin", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(getApplicationContext(), Admin.class));
+                    finish();
                 } else if (documentSnapshot.getString("isDriver") != null) {
                     startActivity(new Intent(getApplicationContext(), DriverDashboard.class));
                     Toast.makeText(LoginActivity.this, "Driver", Toast.LENGTH_SHORT).show();
+                    finish();
                 } else if (documentSnapshot.getString("isUser") != null) {
                     Toast.makeText(LoginActivity.this, "User", Toast.LENGTH_SHORT).show();
                     Intent intent=new Intent(LoginActivity.this,MainActivity.class);
                     startActivity(intent);
+                    finish();
                     //startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 }
             }

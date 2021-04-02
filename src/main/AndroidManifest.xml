@@ -8,6 +8,9 @@
     -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -35,6 +38,8 @@
         android:smallScreens="true"
         android:xlargeScreens="true" />
 
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -42,13 +47,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <activity android:name=".UserPanal.complainStatus" />
         <activity android:name=".DriverPanal.MarkerInfo" />
         <activity android:name=".UserPanal.aboutUs" />
-       <activity android:name=".Admin.allUsers"/>
-        <activity android:name=".DriverPanal.allDriver"/>
+        <activity android:name=".Admin.allUsers" />
+        <activity android:name=".DriverPanal.allDriver" />
         <activity android:name=".Admin.Admin" />
-        <activity android:name=".DriverPanal.mapBox" />
+<!--        <activity android:name=".DriverPanal.mapBox" />-->
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -81,7 +86,6 @@
         <activity android:name=".DriverPanal.DetailedRecievedRequest" />
         <activity android:name=".DriverPanal.UserReceivedRequest" />
         <activity android:name=".DriverPanal.DriverDashboard" />
-        <activity android:name=".UserPanal.UserMap" />
         <!--
          <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -93,15 +97,15 @@
         <activity android:name=".UserPanal.LoginActivity" />
         <activity android:name=".UserPanal.ComplainFormActivity" />
         <activity android:name=".UserPanal.UserProfile" />
+
         <activity android:name=".UserPanal.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".UserPanal.MainActivity" />
     </application>
-    <uses-permission android:name='android.permission.CALL_PHONE' />
 
 </manifest>

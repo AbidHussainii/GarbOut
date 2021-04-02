@@ -127,6 +127,7 @@ public class MarkerInfo extends AppCompatActivity {
         callIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                makePhoneCall();
                 //Toast.makeText(MarkerInfo.this, ""+phoneNo, Toast.LENGTH_SHORT).show();
                 //String mobile=documentSnapshot.getString("phoneNumber");
 //               String call=phoneNo;
@@ -163,19 +164,19 @@ public class MarkerInfo extends AppCompatActivity {
 
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == permmissionCode) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "camera permission granted", Toast.LENGTH_LONG).show();
-                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE_CODE);
-            } else {
-                Toast.makeText(this, "camera permission denied", Toast.LENGTH_LONG).show();
-            }
-        }
-    }
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//        if (requestCode == permmissionCode) {
+//            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                Toast.makeText(this, "camera permission granted", Toast.LENGTH_LONG).show();
+//                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+//                startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE_CODE);
+//            } else {
+//                Toast.makeText(this, "camera permission denied", Toast.LENGTH_LONG).show();
+//            }
+//        }
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -211,43 +212,43 @@ public class MarkerInfo extends AppCompatActivity {
     }
 
 
-    public void sendCompletedRequest() {
-        String status = "Completed";
-        DocumentReference documentReference = firebaseFirestore.collection("Complains").document(markerID);
-        Map<String, Object> complain = new HashMap<>();
-        complain.put("status", status);
-        complain.put("evidence", imgDown);
-        documentReference.update(complain).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Toast.makeText(MarkerInfo.this, "done", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(getApplicationContext(), mapBox.class));
-                finish();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-
-                Toast.makeText(MarkerInfo.this, "Uploading Failed", Toast.LENGTH_SHORT).show();
-            }
-
-
-        });
-
-//    public void retreiveUserProfile() {
-//        documentReference = firestore.collection("users").document(picture);
-//        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+//    public void sendCompletedRequest() {
+//        String status = "Completed";
+//        DocumentReference documentReference = firebaseFirestore.collection("Complains").document(markerID);
+//        Map<String, Object> complain = new HashMap<>();
+//        complain.put("status", status);
+//        complain.put("evidence", imgDown);
+//        documentReference.update(complain).addOnSuccessListener(new OnSuccessListener<Void>() {
 //            @Override
-//            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-//                String userprofile = value.getString("Url");
-//                Picasso.get().load(userprofile).into(userProfile);
-//
+//            public void onSuccess(Void aVoid) {
+//                Toast.makeText(MarkerInfo.this, "done", Toast.LENGTH_SHORT).show();
+//                startActivity(new Intent(getApplicationContext(), mapBox.class));
+//                finish();
 //            }
+//        }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e) {
+//
+//                Toast.makeText(MarkerInfo.this, "Uploading Failed", Toast.LENGTH_SHORT).show();
+//            }
+//
+//
 //        });
 //
+////    public void retreiveUserProfile() {
+////        documentReference = firestore.collection("users").document(picture);
+////        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+////            @Override
+////            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+////                String userprofile = value.getString("Url");
+////                Picasso.get().load(userprofile).into(userProfile);
+////
+////            }
+////        });
+////
+////    }
+//
 //    }
-
-    }
 
     private void uploadImageToFirebase() {
         //String status = "Completed";
@@ -263,7 +264,7 @@ public class MarkerInfo extends AppCompatActivity {
                     @Override
                     public void onSuccess(Uri uri) {
                         imgDown = uri.toString();
-                        sendCompletedRequest();
+//                        sendCompletedRequest();
 
                         //Picasso.get().load(uri).into(captureImage);
                         progressDialog.dismiss();
@@ -292,7 +293,32 @@ public class MarkerInfo extends AppCompatActivity {
         });
     }
 
-
+    private void makePhoneCall() {
+        String number = "03117124299" ;
+        if (number.trim().length() > 0) {
+            if (ContextCompat.checkSelfPermission(MarkerInfo.this,
+                    Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(MarkerInfo.this,
+                        new String[]{Manifest.permission.CALL_PHONE}, 1);
+            } else {
+                String dial = "tel:" + number;
+                startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(dial)));
+            }
+        } else {
+            Toast.makeText(MarkerInfo.this, "Enter Phone Number", Toast.LENGTH_SHORT).show();
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                makePhoneCall();
+            } else {
+                Toast.makeText(this, "Permission DENIED", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 }
 
 

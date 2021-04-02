@@ -89,12 +89,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-    public void post_complain(View view) {
+    /*public void post_complain(View view) {
         Intent intent = new Intent(MainActivity.this, UserMap.class);
         startActivity(intent);
         finish();
 
-    }
+    }*/
 
     public void my_complain(View view) {
         startActivity(new Intent(getApplicationContext(), UserComplains.class));

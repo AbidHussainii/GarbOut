@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".UserPanal.UserComplains">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -19,22 +20,33 @@
             android:layout_margin="10dp"
             android:background="@drawable/ic_arrow_back"
             android:contentDescription="@string/todo"
-            android:onClick="complainBackArrow"/>
+            android:onClick="complainBackArrow" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Claims"
-          android:layout_centerInParent="true"
+            android:layout_centerInParent="true"
             android:textSize="15sp"
             android:textStyle="bold" />
 
+        <ImageView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="10dp"
+            android:background="@drawable/ic_baseline_history_24"
+            android:contentDescription="@string/todo"
+            android:onClick="complainStatus" />
+
     </RelativeLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:layout_below="@id/layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="5dp"
-        android:id="@+id/recyclerview"/>
+        android:id="@+id/recyclerview" />
 
 </RelativeLayout>

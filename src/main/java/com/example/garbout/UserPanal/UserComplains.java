@@ -125,16 +125,20 @@ public class UserComplains extends AppCompatActivity {
         adapter.stopListening();
     }
 
-    public void complainBackArrow(View view) {
-        Intent intent=new Intent(getApplicationContext(),MainActivity.class);
-        startActivity(intent);
-    }
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         finish();
     }
+    public void complainBackArrow(View view) {
+        Intent intent=new Intent(getApplicationContext(),MainActivity.class);
+        startActivity(intent);
+    }
+    public void complainStatus(View view) {
+        startActivity(new Intent(getApplicationContext(),complainStatus.class));
+    }
+
+
 }
 
 
